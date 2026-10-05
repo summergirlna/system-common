@@ -1,6 +1,6 @@
 package com.example.systemcommon.job;
 
-import com.example.systemcommon.cluster.ClusterStartResult;
+import com.example.systemcommon.cluster.ClusterOperationResult;
 import com.example.systemcommon.cluster.ClusterStarter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public class ClusterStartJob implements Job {
     public JobResult execute() {
         log.info("クラスタ起動処理を開始します。");
 
-        ClusterStartResult result = clusterStarter.start();
+        ClusterOperationResult result = clusterStarter.start();
 
         if (result.isFailure()) {
             log.error("クラスタ起動処理が異常終了しました。message={}", result.message());

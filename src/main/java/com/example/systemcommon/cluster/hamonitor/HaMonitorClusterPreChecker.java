@@ -1,26 +1,24 @@
 package com.example.systemcommon.cluster.hamonitor;
 
-import com.example.systemcommon.cluster.ClusterPreCheckResult;
+import com.example.systemcommon.cluster.ClusterOperationResult;
 import com.example.systemcommon.cluster.ClusterPreChecker;
 import com.example.systemcommon.command.CommandExecutor;
 import com.example.systemcommon.command.CommandResult;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-@RequiredArgsConstructor
 @ConditionalOnProperty(prefix = "system-common.cluster", name = "type", havingValue = "ha-monitor")
-public class HaMonitorClusterPreChecker implements ClusterPreChecker {
+public class HaMonitorClusterPreChecker extends AbstractHaMonitorClusterOperation implements ClusterPreChecker {
 
-    private final CommandExecutor commandExecutor;
-
-    private final HaMonitorProperties properties;
+    public HaMonitorClusterPreChecker(CommandExecutor commandExecutor, HaMonitorProperties properties) {
+        super(commandExecutor, properties);
+    }
 
     @Override
-    public ClusterPreCheckResult check() {
+    public ClusterOperationResult check() {
         log.info("HAモニタのクラスタ起動前チェック処理を開始します。");
 
         CommandResult monitorPathResult = checkMonitorPath();
@@ -34,27 +32,16 @@ public class HaMonitorClusterPreChecker implements ClusterPreChecker {
         }
 
         log.info("HAモニタのクラスタ起動前チェック処理が正常終了しました。");
-        return ClusterPreCheckResult.success("HAモニタのクラスタ起動前チェック処理が正常に終了しました。");
+        return ClusterOperationResult.success("HAモニタのクラスタ起動前チェック処理が正常に終了しました。");
     }
 
     private CommandResult checkMonitorPath() {
         log.info("監視パスの状態チェックを開始します。");
-        return commandExecutor.execute(
-                properties.monitorPath().command(), properties.monitorPath().timeout());
+        return execute(properties.monitorPath());
     }
 
     private CommandResult checkResetPath() {
         log.info("リセットパスの状態チェックを開始します。");
-        return commandExecutor.execute(
-                properties.resetPath().command(), properties.resetPath().timeout());
-    }
-
-    private boolean isFailure(CommandResult result, HaMonitorCommandProperties commandProperties) {
-        return !commandProperties.successExitCodes().contains(result.exitCode());
-    }
-
-    private ClusterPreCheckResult failure(String message, CommandResult result) {
-        log.error("{} exitCode={}, stdout={}, stderr={}", message, result.exitCode(), result.stdout(), result.stderr());
-        return ClusterPreCheckResult.failure(message + " exitCode=" + result.exitCode());
+        return execute(properties.resetPath());
     }
 }
