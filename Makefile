@@ -1,5 +1,6 @@
 MVN := /bin/sh /Users/kuritayu/Library/Application\ Support/JetBrains/IntelliJIdea2026.2/plugins/maven-plugin/lib/maven3/bin/mvn
 JAR := target/system-common-1.0-SNAPSHOT.jar
+LOG_DIR := logs
 
 .PHONY: help clean package build verify test format format-check lint check run-cluster-start
 
@@ -44,4 +45,4 @@ check:
 	$(MVN) spotless:check checkstyle:check test
 
 run-cluster-start: package
-	java -jar $(JAR) cluster-start
+	SYSTEM_COMMON_LOG_DIR=$(LOG_DIR) java -jar $(JAR) cluster-start
