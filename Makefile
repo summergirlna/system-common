@@ -6,16 +6,17 @@ LOG_DIR := logs
 
 help:
 	@echo "Available targets:"
-	@echo "  make clean              - Remove build artifacts"
-	@echo "  make package            - Build jar package"
-	@echo "  make build              - Clean and package"
-	@echo "  make verify             - Run Maven verify phase"
-	@echo "  make test               - Run tests"
-	@echo "  make format             - Apply code formatter"
-	@echo "  make format-check       - Check code formatting"
-	@echo "  make lint               - Run Checkstyle"
-	@echo "  make check              - Run format check, lint, and tests"
-	@echo "  make run-cluster-start  - Run cluster-start job"
+	@echo "  make clean                  - Remove build artifacts"
+	@echo "  make package                - Build jar package"
+	@echo "  make build                  - Clean and package"
+	@echo "  make verify                 - Run Maven verify phase"
+	@echo "  make test                   - Run tests"
+	@echo "  make format                 - Apply code formatter"
+	@echo "  make format-check           - Check code formatting"
+	@echo "  make lint                   - Run Checkstyle"
+	@echo "  make check                  - Run format check, lint, and tests"
+	@echo "  make run-cluster-pre-check  - Run cluster-pre-check job"
+	@echo "  make run-cluster-start      - Run cluster-start job"
 
 clean:
 	$(MVN) clean
@@ -43,6 +44,9 @@ lint:
 
 check:
 	$(MVN) spotless:check checkstyle:check test
+
+run-cluster-pre-check: package
+	SYSTEM_COMMON_LOG_DIR=$(LOG_DIR) java -jar $(JAR) cluster-pre-check
 
 run-cluster-start: package
 	SYSTEM_COMMON_LOG_DIR=$(LOG_DIR) java -jar $(JAR) cluster-start

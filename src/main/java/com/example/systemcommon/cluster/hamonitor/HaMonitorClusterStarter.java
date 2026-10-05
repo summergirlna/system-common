@@ -23,16 +23,6 @@ public class HaMonitorClusterStarter implements ClusterStarter {
     public ClusterStartResult start() {
         log.info("HAモニタのクラスタ起動処理を開始します。");
 
-        CommandResult monitorPathResult = checkMonitorPath();
-        if (isFailure(monitorPathResult, properties.monitorPath())) {
-            return failure("監視パスの状態チェックに失敗しました。", monitorPathResult);
-        }
-
-        CommandResult resetPathResult = checkResetPath();
-        if (isFailure(resetPathResult, properties.monitorPath())) {
-            return failure("リセットパスの状態チェックに失敗しました。", resetPathResult);
-        }
-
         CommandResult startResult = startHaMonitor();
         if (isFailure(startResult, properties.start())) {
             return failure("HAモニタのサーバ起動に失敗しました。", startResult);
@@ -40,18 +30,6 @@ public class HaMonitorClusterStarter implements ClusterStarter {
 
         log.info("HAモニタのクラスタ起動処理が正常終了しました。");
         return ClusterStartResult.success("HAモニタのクラスタ起動処理が正常に終了しました。");
-    }
-
-    private CommandResult checkMonitorPath() {
-        log.info("監視パスの状態チェックを開始します。");
-        return commandExecutor.execute(
-                properties.monitorPath().command(), properties.monitorPath().timeout());
-    }
-
-    private CommandResult checkResetPath() {
-        log.info("リセットパスの状態チェックを開始します。");
-        return commandExecutor.execute(
-                properties.resetPath().command(), properties.resetPath().timeout());
     }
 
     private CommandResult startHaMonitor() {
