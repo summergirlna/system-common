@@ -37,3 +37,22 @@ system-common:
         timeout: "30s"
         success-exit-codes:
           - 0
+
+  middleware:
+    start:
+      products:
+        - name: "uCosminexus Application Server"
+          script: "echo"
+          args:
+            - "/etc/cmcluster/pp/uas.sh start"
+          timeout: "300s"
+          success-exit-codes:
+            - 0
+
+        - name: "Application"
+          script: "echo"
+          args:
+            - "/etc/cmcluster/pp/ap.sh start"
+          timeout: "300s"
+          success-exit-codes:
+            - 0

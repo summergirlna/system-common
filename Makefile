@@ -18,6 +18,7 @@ help:
 	@echo "  make run-cluster-pre-check  - Run cluster-pre-check job"
 	@echo "  make run-cluster-start      - Run cluster-start job"
 	@echo "  make run-cluster-check      - Run cluster-check job"
+	@echo "  make run-middleware-start   - Run middleware-start job"
 
 clean:
 	$(MVN) clean
@@ -54,3 +55,6 @@ run-cluster-start: package
 
 run-cluster-check: package
 	SYSTEM_COMMON_LOG_DIR=$(LOG_DIR) java -jar $(JAR) cluster-check
+
+run-middleware-start: package
+	SYSTEM_COMMON_LOG_DIR=$(LOG_DIR) java -jar $(JAR) middleware-start
