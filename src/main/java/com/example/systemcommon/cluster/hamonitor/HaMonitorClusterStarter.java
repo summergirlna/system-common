@@ -1,9 +1,9 @@
 package com.example.systemcommon.cluster.hamonitor;
 
-import com.example.systemcommon.cluster.ClusterOperationResult;
 import com.example.systemcommon.cluster.ClusterStarter;
 import com.example.systemcommon.command.CommandExecutor;
 import com.example.systemcommon.command.CommandResult;
+import com.example.systemcommon.operation.OperationResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ public class HaMonitorClusterStarter extends AbstractHaMonitorClusterOperation i
     }
 
     @Override
-    public ClusterOperationResult start() {
+    public OperationResult start() {
         log.info("HAモニタのクラスタ起動処理を開始します。");
 
         CommandResult startResult = startHaMonitor();
@@ -27,7 +27,7 @@ public class HaMonitorClusterStarter extends AbstractHaMonitorClusterOperation i
         }
 
         log.info("HAモニタのクラスタ起動処理が正常終了しました。");
-        return ClusterOperationResult.success("HAモニタのクラスタ起動処理が正常に終了しました。");
+        return OperationResult.success("HAモニタのクラスタ起動処理が正常に終了しました。");
     }
 
     private CommandResult startHaMonitor() {

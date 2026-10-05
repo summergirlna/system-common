@@ -1,6 +1,8 @@
 package com.example.systemcommon.cluster;
 
+import com.example.systemcommon.operation.OperationResult;
+
 public interface ClusterPreChecker {
 
-    ClusterOperationResult check();
+    OperationResult check();
 }

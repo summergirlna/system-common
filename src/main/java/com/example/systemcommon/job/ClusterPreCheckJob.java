@@ -1,7 +1,7 @@
 package com.example.systemcommon.job;
 
-import com.example.systemcommon.cluster.ClusterOperationResult;
 import com.example.systemcommon.cluster.ClusterPreChecker;
+import com.example.systemcommon.operation.OperationResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,7 @@ public class ClusterPreCheckJob implements Job {
     public JobResult execute() {
         log.info("クラスタ起動前チェック処理を開始します。");
 
-        ClusterOperationResult result = clusterPreChecker.check();
+        OperationResult result = clusterPreChecker.check();
 
         if (result.isFailure()) {
             log.error("クラスタ起動前チェック処理が異常終了しました。message={}", result.message());

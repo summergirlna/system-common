@@ -1,7 +1,7 @@
 package com.example.systemcommon.job;
 
 import com.example.systemcommon.cluster.ClusterChecker;
-import com.example.systemcommon.cluster.ClusterOperationResult;
+import com.example.systemcommon.operation.OperationResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,7 @@ public class ClusterCheckJob implements Job {
     public JobResult execute() {
         log.info("クラスタ起動確認処理を開始します。");
 
-        ClusterOperationResult result = clusterChecker.check();
+        OperationResult result = clusterChecker.check();
 
         if (result.isFailure()) {
             log.error("クラスタ起動確認処理が異常終了しました。message={}", result.message());

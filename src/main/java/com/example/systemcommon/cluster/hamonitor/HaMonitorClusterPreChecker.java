@@ -1,9 +1,9 @@
 package com.example.systemcommon.cluster.hamonitor;
 
-import com.example.systemcommon.cluster.ClusterOperationResult;
 import com.example.systemcommon.cluster.ClusterPreChecker;
 import com.example.systemcommon.command.CommandExecutor;
 import com.example.systemcommon.command.CommandResult;
+import com.example.systemcommon.operation.OperationResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ public class HaMonitorClusterPreChecker extends AbstractHaMonitorClusterOperatio
     }
 
     @Override
-    public ClusterOperationResult check() {
+    public OperationResult check() {
         log.info("HAモニタのクラスタ起動前チェック処理を開始します。");
 
         CommandResult monitorPathResult = checkMonitorPath();
@@ -32,7 +32,7 @@ public class HaMonitorClusterPreChecker extends AbstractHaMonitorClusterOperatio
         }
 
         log.info("HAモニタのクラスタ起動前チェック処理が正常終了しました。");
-        return ClusterOperationResult.success("HAモニタのクラスタ起動前チェック処理が正常に終了しました。");
+        return OperationResult.success("HAモニタのクラスタ起動前チェック処理が正常に終了しました。");
     }
 
     private CommandResult checkMonitorPath() {

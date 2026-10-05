@@ -1,8 +1,8 @@
 package com.example.systemcommon.cluster.hamonitor;
 
-import com.example.systemcommon.cluster.ClusterOperationResult;
 import com.example.systemcommon.command.CommandExecutor;
 import com.example.systemcommon.command.CommandResult;
+import com.example.systemcommon.operation.OperationResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,8 +22,8 @@ public abstract class AbstractHaMonitorClusterOperation {
         return !commandProperties.successExitCodes().contains(result.exitCode());
     }
 
-    protected ClusterOperationResult failure(String message, CommandResult result) {
+    protected OperationResult failure(String message, CommandResult result) {
         log.error("{} exitCode={}, stdout={}, stderr={}", message, result.exitCode(), result.stdout(), result.stderr());
-        return ClusterOperationResult.failure(message + " exitCode=" + result.exitCode());
+        return OperationResult.failure(message + " exitCode=" + result.exitCode());
     }
 }
