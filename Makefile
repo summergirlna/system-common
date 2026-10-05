@@ -17,6 +17,7 @@ help:
 	@echo "  make check                  - Run format check, lint, and tests"
 	@echo "  make run-cluster-pre-check  - Run cluster-pre-check job"
 	@echo "  make run-cluster-start      - Run cluster-start job"
+	@echo "  make run-cluster-check      - Run cluster-check job"
 
 clean:
 	$(MVN) clean
@@ -50,3 +51,6 @@ run-cluster-pre-check: package
 
 run-cluster-start: package
 	SYSTEM_COMMON_LOG_DIR=$(LOG_DIR) java -jar $(JAR) cluster-start
+
+run-cluster-check: package
+	SYSTEM_COMMON_LOG_DIR=$(LOG_DIR) java -jar $(JAR) cluster-check

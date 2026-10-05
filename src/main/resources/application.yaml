@@ -29,3 +29,11 @@ system-common:
         timeout: "120s"
         success-exit-codes:
           - 0
+
+      status:
+        command:
+          - "echo"
+          - "monshow online"
+        timeout: "30s"
+        success-exit-codes:
+          - 0

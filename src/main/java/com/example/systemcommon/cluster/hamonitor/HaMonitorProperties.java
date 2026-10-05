@@ -6,4 +6,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public record HaMonitorProperties(
         HaMonitorCommandProperties monitorPath,
         HaMonitorCommandProperties resetPath,
-        HaMonitorCommandProperties start) {}
+        HaMonitorCommandProperties start,
+        HaMonitorCommandProperties status) {}
