@@ -1,9 +1,6 @@
 package com.example.systemcommon.job;
 
-public record JobResult(
-        JobExitCode exitCode,
-        String message
-) {
+public record JobResult(JobExitCode exitCode, String message) {
     public static JobResult success(String message) {
         return new JobResult(JobExitCode.SUCCESS, message);
     }

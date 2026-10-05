@@ -1,8 +1,5 @@
 package com.example.systemcommon.command;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +10,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
@@ -41,16 +40,11 @@ public class CommandExecutor {
                 String stdout = read(process.getInputStream());
                 String stderr = read(process.getErrorStream());
 
-                log.error("外部コマンドがタイムアウトしました: command={}, timeout={}, elapsed={}",
-                        command, timeout, elapsed);
+                log.error("外部コマンドがタイムアウトしました: command={}, timeout={}, elapsed={}", command, timeout, elapsed);
 
                 return new CommandResult(
-                        command,
-                        -1,  // タイムアウトは一律-1扱い
-                        stdout,
-                        stderr,
-                        elapsed
-                );
+                        command, -1, // タイムアウトは一律-1扱い
+                        stdout, stderr, elapsed);
             }
 
             int exitCode = process.exitValue();
@@ -68,13 +62,7 @@ public class CommandExecutor {
                 log.info("外部コマンド標準エラー: command={}, stderr={}", command, stderr);
             }
 
-            return new CommandResult(
-                    command,
-                    exitCode,
-                    stdout,
-                    stderr,
-                    elapsed
-            );
+            return new CommandResult(command, exitCode, stdout, stderr, elapsed);
         } catch (IOException e) {
             Duration elapsed = Duration.between(start, Instant.now());
             log.error("外部コマンド実行時にI/Oエラーが発生しました: command={}, elapsed={}", command, elapsed, e);
@@ -107,8 +95,7 @@ public class CommandExecutor {
 
     private String read(InputStream inputStream) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, COMMAND_OUTPUT_CHARSET))) {
-            return reader.lines()
-                    .collect(Collectors.joining(System.lineSeparator()));
+            return reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } catch (IOException e) {
             throw new IllegalStateException("外部コマンドの出力読み取りに失敗しました。");
         }

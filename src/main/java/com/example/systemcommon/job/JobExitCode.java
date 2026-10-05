@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum JobExitCode {
-
     SUCCESS(0),
     WARNING(10),
     BUSINESS_ERROR(20),
@@ -16,5 +15,4 @@ public enum JobExitCode {
     UNEXPECTED_ERROR(99);
 
     private final int code;
-
 }
