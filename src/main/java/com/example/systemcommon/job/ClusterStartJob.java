@@ -1,9 +1,7 @@
 package com.example.systemcommon.job;
 
-import com.example.systemcommon.command.CommandExecutor;
-import com.example.systemcommon.command.CommandResult;
-import java.time.Duration;
-import java.util.List;
+import com.example.systemcommon.cluster.ClusterStartResult;
+import com.example.systemcommon.cluster.ClusterStarter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -13,7 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ClusterStartJob implements Job {
 
-    private final CommandExecutor commandExecutor;
+    private final ClusterStarter clusterStarter;
 
     @Override
     public String name() {
@@ -24,14 +22,14 @@ public class ClusterStartJob implements Job {
     public JobResult execute() {
         log.info("クラスタ起動処理を開始します。");
 
-        CommandResult result = commandExecutor.execute(List.of("echo", "cluster start"), Duration.ofSeconds(30));
+        ClusterStartResult result = clusterStarter.start();
 
         if (result.isFailure()) {
-            log.error("クラスタ起動コマンドが異常終了しました。exitCode={}, stderr={}", result.exitCode(), result.stderr());
-            return JobResult.failure(JobExitCode.SYSTEM_ERROR, "クラスタ起動コマンドが異常終了しました。exitCode=" + result.exitCode());
+            log.error("クラスタ起動処理が異常終了しました。message={}", result.message());
+            return JobResult.failure(JobExitCode.SYSTEM_ERROR, result.message());
         }
 
-        log.info("クラスタ起動処理が正常に終了しました。");
-        return JobResult.success("クラスタ起動処理が正常に終了しました。");
+        log.info("クラスタ起動処理が正常に終了しました。message={}", result.message());
+        return JobResult.success(result.message());
     }
 }

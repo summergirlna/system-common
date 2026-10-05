@@ -1,3 +1,31 @@
 spring:
   main:
     banner-mode: off
+
+system-common:
+  cluster:
+    type: ha-monitor
+    ha-monitor:
+      monitor-path:
+        command:
+          - "echo"
+          - "monpath ok"
+        timeout: "30s"
+        success-exit-codes:
+          - 0
+
+      reset-path:
+        command:
+          - "echo"
+          - "monrp ok"
+        timeout: "30s"
+        success-exit-codes:
+          - 0
+
+      start:
+        command:
+          - "echo"
+          - "monbegin ok"
+        timeout: "120s"
+        success-exit-codes:
+          - 0
