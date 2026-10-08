@@ -1,47 +1,37 @@
 package com.example.systemcommon.cluster.hamonitor;
 
 import com.example.systemcommon.cluster.ClusterPreChecker;
-import com.example.systemcommon.command.CommandExecutor;
-import com.example.systemcommon.command.CommandResult;
 import com.example.systemcommon.operation.OperationResult;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 @ConditionalOnProperty(prefix = "system-common.cluster", name = "type", havingValue = "ha-monitor")
-public class HaMonitorClusterPreChecker extends AbstractHaMonitorClusterOperation implements ClusterPreChecker {
+public class HaMonitorClusterPreChecker implements ClusterPreChecker {
 
-    public HaMonitorClusterPreChecker(CommandExecutor commandExecutor, HaMonitorProperties properties) {
-        super(commandExecutor, properties);
-    }
+    private final HaMonitorProperties properties;
+
+    private final HaMonitorCommandExecutor executor;
 
     @Override
     public OperationResult check() {
         log.info("HAモニタのクラスタ起動前チェック処理を開始します。");
 
-        CommandResult monitorPathResult = checkMonitorPath();
-        if (isFailure(monitorPathResult, properties.monitorPath())) {
-            return failure("監視パスの状態チェックに失敗しました。", monitorPathResult);
+        OperationResult monitorPathResult = executor.execute("監視パス状態チェック", properties.monitorPath());
+        if (monitorPathResult.isFailure()) {
+            return monitorPathResult;
         }
 
-        CommandResult resetPathResult = checkResetPath();
-        if (isFailure(resetPathResult, properties.resetPath())) {
-            return failure("リセットパスの状態チェックに失敗しました。", resetPathResult);
+        OperationResult resetPathResult = executor.execute("リセットパス状態チェック", properties.resetPath());
+        if (resetPathResult.isFailure()) {
+            return resetPathResult;
         }
 
         log.info("HAモニタのクラスタ起動前チェック処理が正常終了しました。");
         return OperationResult.success("HAモニタのクラスタ起動前チェック処理が正常に終了しました。");
-    }
-
-    private CommandResult checkMonitorPath() {
-        log.info("監視パスの状態チェックを開始します。");
-        return execute(properties.monitorPath());
-    }
-
-    private CommandResult checkResetPath() {
-        log.info("リセットパスの状態チェックを開始します。");
-        return execute(properties.resetPath());
     }
 }
