@@ -56,3 +56,20 @@ system-common:
           timeout: "300s"
           success-exit-codes:
             - 0
+    check:
+      products:
+        - name: "uCosminexus Application Server"
+          script: "echo"
+          args:
+            - "/etc/cmcluster/pp/uas.sh check"
+          timeout: "300s"
+          success-exit-codes:
+            - 0
+
+        - name: "Application"
+          script: "echo"
+          args:
+            - "/etc/cmcluster/pp/ap.sh check"
+          timeout: "300s"
+          success-exit-codes:
+            - 0
