@@ -1,6 +1,7 @@
 package com.example.systemcommon.middleware;
 
 import com.example.systemcommon.operation.OperationResult;
+import com.example.systemcommon.script.ScriptOperationExecutor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -12,10 +13,10 @@ public class ScriptMiddlewareChecker implements MiddlewareChecker {
 
     private final MiddlewareProperties properties;
 
-    private final ScriptMiddlewareOperationExecutor executor;
+    private final ScriptOperationExecutor executor;
 
     @Override
     public OperationResult check() {
-        return executor.execute("チェック", properties.check().products());
+        return executor.execute("ミドルウェア", "チェック", properties.check().steps());
     }
 }

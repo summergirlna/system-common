@@ -1,6 +1,7 @@
 package com.example.systemcommon.online;
 
 import com.example.systemcommon.operation.OperationResult;
+import com.example.systemcommon.script.ScriptOperationExecutor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -12,10 +13,10 @@ public class ScriptOnlineStarter implements OnlineStarter {
 
     private final OnlineProperties properties;
 
-    private final ScriptOnlineOperationExecutor executor;
+    private final ScriptOperationExecutor executor;
 
     @Override
     public OperationResult start() {
-        return executor.execute("開始", properties.start().steps());
+        return executor.execute("オンライン業務", "開始", properties.start().steps());
     }
 }

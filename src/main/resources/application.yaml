@@ -40,7 +40,7 @@ system-common:
 
   middleware:
     start:
-      products:
+      steps:
         - name: "uCosminexus Application Server"
           script: "echo"
           args:
@@ -57,7 +57,7 @@ system-common:
           success-exit-codes:
             - 0
     check:
-      products:
+      steps:
         - name: "uCosminexus Application Server"
           script: "echo"
           args:
