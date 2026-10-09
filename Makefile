@@ -2,7 +2,7 @@ MVN := /bin/sh /Users/kuritayu/Library/Application\ Support/JetBrains/IntelliJId
 JAR := target/system-common-1.0-SNAPSHOT.jar
 LOG_DIR := logs
 
-.PHONY: help clean package build verify test format format-check lint check run-cluster-start
+.PHONY: help clean package build verify test format format-check lint check run-cluster-pre-check run-cluster-start run-cluster-check run-middleware-start run-middleware-check run-online-start
 
 help:
 	@echo "Available targets:"
