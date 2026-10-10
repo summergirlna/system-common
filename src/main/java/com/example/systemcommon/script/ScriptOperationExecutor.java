@@ -1,7 +1,7 @@
 package com.example.systemcommon.script;
 
-import com.example.systemcommon.command.CommandExecutor;
-import com.example.systemcommon.command.CommandResult;
+import com.example.systemcommon.command.CommandOperationExecutor;
+import com.example.systemcommon.command.CommandOperationProperties;
 import com.example.systemcommon.operation.OperationResult;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 public class ScriptOperationExecutor {
-    private final CommandExecutor commandExecutor;
+    private final CommandOperationExecutor commandOperationExecutor;
 
     public OperationResult execute(String targetName, String operationName, List<ScriptStepProperties> steps) {
         log.info("{}{}処理を開始します。", targetName, operationName);
@@ -30,26 +30,10 @@ public class ScriptOperationExecutor {
     }
 
     private OperationResult executeStep(String targetName, String operationName, ScriptStepProperties step) {
-        List<String> command = buildCommand(step);
+        CommandOperationProperties properties =
+                new CommandOperationProperties(buildCommand(step), step.timeout(), step.successExitCodes());
 
-        log.info("{}{}を開始します。name={}, command={}", targetName, operationName, step.name(), command);
-
-        CommandResult result = commandExecutor.execute(command, step.timeout());
-        if (!step.successExitCodes().contains(result.exitCode())) {
-            log.error(
-                    "{}{}に失敗しました。name={}, exitCode={}, stdout={}, stderr={}",
-                    targetName,
-                    operationName,
-                    step.name(),
-                    result.exitCode(),
-                    result.stdout(),
-                    result.stderr());
-            return OperationResult.failure(
-                    step.name() + " の" + operationName + "に失敗しました。exitCode=" + result.exitCode());
-        }
-
-        log.info("{}{}が正常終了しました。name={}", targetName, operationName, step.name());
-        return OperationResult.success(step.name() + " の" + operationName + "が正常に終了しました。");
+        return commandOperationExecutor.execute(targetName, operationName + ":" + step.name(), properties);
     }
 
     private List<String> buildCommand(ScriptStepProperties step) {
