@@ -93,3 +93,14 @@ system-common:
           timeout: "300s"
           success-exit-codes:
             - 0
+
+  application:
+    stop:
+      steps:
+        - name: "アプリケーション停止"
+          script: "echo"
+          args:
+            - "/etc/cmcluster/pp/ap.sh stop"
+          timeout: "300s"
+          success-exit-codes:
+            - 0

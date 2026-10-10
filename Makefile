@@ -2,7 +2,7 @@ MVN := /bin/sh /Users/kuritayu/Library/Application\ Support/JetBrains/IntelliJId
 JAR := target/system-common-1.0-SNAPSHOT.jar
 LOG_DIR := logs
 
-.PHONY: help clean package build verify test format format-check lint check run-cluster-pre-check run-cluster-start run-cluster-check run-middleware-start run-middleware-check run-online-start run-online-stop
+.PHONY: help clean package build verify test format format-check lint check run-cluster-pre-check run-cluster-start run-cluster-check run-middleware-start run-middleware-check run-online-start run-online-stop run-application-stop
 
 help:
 	@echo "Available targets:"
@@ -22,6 +22,7 @@ help:
 	@echo "  make run-middleware-check   - Run middleware-check job"
 	@echo "  make run-online-start       - Run online-start job"
 	@echo "  make run-online-start       - Run online-stop job"
+	@echo "  make run-application-stop   - Run application-stop job"
 
 clean:
 	$(MVN) clean
@@ -70,3 +71,6 @@ run-online-start: package
 
 run-online-stop: package
 	SYSTEM_COMMON_LOG_DIR=$(LOG_DIR) java -jar $(JAR) online-stop
+
+run-application-stop: package
+	SYSTEM_COMMON_LOG_DIR=$(LOG_DIR) java -jar $(JAR) application-stop
