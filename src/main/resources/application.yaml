@@ -38,6 +38,14 @@ system-common:
         success-exit-codes:
           - 0
 
+      stop:
+        command:
+          - "echo"
+          - "monend"
+        timeout: "30s"
+        success-exit-codes:
+          - 0
+
   middleware:
     start:
       steps:

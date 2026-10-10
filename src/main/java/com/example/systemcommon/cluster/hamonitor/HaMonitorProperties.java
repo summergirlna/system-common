@@ -8,4 +8,5 @@ public record HaMonitorProperties(
         CommandOperationProperties monitorPath,
         CommandOperationProperties resetPath,
         CommandOperationProperties start,
-        CommandOperationProperties status) {}
+        CommandOperationProperties status,
+        CommandOperationProperties stop) {}

@@ -4,7 +4,7 @@ LOG_DIR := logs
 JAVA := SYSTEM_COMMON_LOG_DIR=$(LOG_DIR) java -jar $(JAR)
 
 .PHONY: help clean package build verify test format format-check lint check \
-	run-cluster-pre-check run-cluster-start run-cluster-check \
+	run-cluster-pre-check run-cluster-start run-cluster-check run-cluster-stop \
 	run-middleware-start run-middleware-check \
 	run-application-start run-application-stop \
 	run-online-start run-online-stop \
@@ -24,6 +24,7 @@ help:
 	@echo "  make run-cluster-pre-check  - Run cluster-pre-check job"
 	@echo "  make run-cluster-start      - Run cluster-start job"
 	@echo "  make run-cluster-check      - Run cluster-check job"
+	@echo "  make run-cluster-stop       - Run cluster-stop job"
 	@echo "  make run-middleware-start   - Run middleware-start job"
 	@echo "  make run-middleware-check   - Run middleware-check job"
 	@echo "  make run-application-start  - Run application-start job"
@@ -70,6 +71,9 @@ run-cluster-start: package
 
 run-cluster-check: package
 	$(JAVA) cluster-check
+
+run-cluster-stop: package
+	$(JAVA) cluster-stop
 
 run-middleware-start: package
 	$(JAVA) middleware-start
