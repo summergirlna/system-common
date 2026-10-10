@@ -82,6 +82,24 @@ system-common:
           success-exit-codes:
             - 0
 
+    stop:
+      steps:
+        - name: "Application"
+          script: "echo"
+          args:
+            - "/etc/cmcluster/pp/ap.sh stop"
+          timeout: "300s"
+          success-exit-codes:
+            - 0
+
+        - name: "uCosminexus Application Server"
+          script: "echo"
+          args:
+            - "/etc/cmcluster/pp/uas.sh stop"
+          timeout: "300s"
+          success-exit-codes:
+            - 0
+
   online:
     start:
       steps:

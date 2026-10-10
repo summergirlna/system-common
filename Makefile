@@ -5,7 +5,7 @@ JAVA := SYSTEM_COMMON_LOG_DIR=$(LOG_DIR) java -jar $(JAR)
 
 .PHONY: help clean package build verify test format format-check lint check \
 	run-cluster-pre-check run-cluster-start run-cluster-check run-cluster-stop \
-	run-middleware-start run-middleware-check \
+	run-middleware-start run-middleware-check run-middleware-stop \
 	run-application-start run-application-stop \
 	run-online-start run-online-stop \
 	run-monday-morning run-weekday-morning run-weekday-night run-friday-night
@@ -27,6 +27,7 @@ help:
 	@echo "  make run-cluster-stop       - Run cluster-stop job"
 	@echo "  make run-middleware-start   - Run middleware-start job"
 	@echo "  make run-middleware-check   - Run middleware-check job"
+	@echo "  make run-middleware-stop    - Run middleware-stop job"
 	@echo "  make run-application-start  - Run application-start job"
 	@echo "  make run-application-stop   - Run application-stop job"
 	@echo "  make run-online-start       - Run online-start job"
@@ -81,6 +82,9 @@ run-middleware-start: package
 run-middleware-check: package
 	$(JAVA) middleware-check
 
+run-middleware-stop: package
+	$(JAVA) middleware-stop
+
 run-application-start: package
 	$(JAVA) application-start
 
@@ -113,4 +117,5 @@ run-weekday-night: package
 run-friday-night: package
 	$(JAVA) online-stop
 	$(JAVA) application-stop
+	$(JAVA) middleware-stop
 	$(JAVA) cluster-stop
