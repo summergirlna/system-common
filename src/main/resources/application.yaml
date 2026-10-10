@@ -95,12 +95,38 @@ system-common:
             - 0
 
   application:
+    start:
+      steps:
+        - name: "uCosminexus Application Server"
+          script: "echo"
+          args:
+            - "/etc/cmcluster/pp/uas.sh start"
+          timeout: "300s"
+          success-exit-codes:
+            - 0
+
+        - name: "Application"
+          script: "echo"
+          args:
+            - "/etc/cmcluster/pp/ap.sh start"
+          timeout: "300s"
+          success-exit-codes:
+            - 0
+
     stop:
       steps:
-        - name: "アプリケーション停止"
+        - name: "Application"
           script: "echo"
           args:
             - "/etc/cmcluster/pp/ap.sh stop"
+          timeout: "300s"
+          success-exit-codes:
+            - 0
+
+        - name: "uCosminexus Application Server"
+          script: "echo"
+          args:
+            - "/etc/cmcluster/pp/uas.sh stop"
           timeout: "300s"
           success-exit-codes:
             - 0
