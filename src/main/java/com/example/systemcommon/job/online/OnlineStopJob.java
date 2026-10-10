@@ -1,9 +1,7 @@
 package com.example.systemcommon.job.online;
 
 import com.example.systemcommon.fw.operation.OperationResult;
-import com.example.systemcommon.job.Job;
-import com.example.systemcommon.job.JobExitCode;
-import com.example.systemcommon.job.JobResult;
+import com.example.systemcommon.job.AbstractOperationJob;
 import com.example.systemcommon.online.OnlineStopper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class OnlineStopJob implements Job {
+public class OnlineStopJob extends AbstractOperationJob {
 
     private final OnlineStopper onlineStopper;
 
@@ -22,17 +20,12 @@ public class OnlineStopJob implements Job {
     }
 
     @Override
-    public JobResult execute() {
-        log.info("オンライン業務停止ジョブを開始します。");
+    protected String operationName() {
+        return "オンライン業務停止";
+    }
 
-        OperationResult result = onlineStopper.stop();
-
-        if (result.isFailure()) {
-            log.error("オンライン業務停止ジョブが異常終了しました。message={}", result.message());
-            return JobResult.failure(JobExitCode.SYSTEM_ERROR, result.message());
-        }
-
-        log.info("オンライン業務停止ジョブが正常終了しました。message={}", result.message());
-        return JobResult.success(result.message());
+    @Override
+    protected OperationResult executeOperation() {
+        return onlineStopper.stop();
     }
 }
