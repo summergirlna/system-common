@@ -1,9 +1,11 @@
 MVN := /bin/sh /Users/kuritayu/Library/Application\ Support/JetBrains/IntelliJIdea2026.2/plugins/maven-plugin/lib/maven3/bin/mvn
 JAR := target/system-common-1.0-SNAPSHOT.jar
 LOG_DIR := logs
-JAVA := SYSTEM_COMMON_LOG_DIR=$(LOG_DIR) java -jar $(JAR)
+OPERATION_DATE_FILE := var/operation-date.txt
+JAVA := SYSTEM_COMMON_LOG_DIR=$(LOG_DIR) SYSTEM_COMMON_OPERATION_DATE_FILE=$(OPERATION_DATE_FILE) java -jar $(JAR)
 
 .PHONY: help clean package build verify test format format-check lint check \
+	run-operation-date-update \
 	run-cluster-pre-check run-cluster-start run-cluster-check run-cluster-stop \
 	run-middleware-start run-middleware-check run-middleware-stop \
 	run-application-start run-application-stop \
@@ -12,30 +14,31 @@ JAVA := SYSTEM_COMMON_LOG_DIR=$(LOG_DIR) java -jar $(JAR)
 
 help:
 	@echo "Available targets:"
-	@echo "  make clean                  - Remove build artifacts"
-	@echo "  make package                - Build jar package"
-	@echo "  make build                  - Clean and package"
-	@echo "  make verify                 - Run Maven verify phase"
-	@echo "  make test                   - Run tests"
-	@echo "  make format                 - Apply code formatter"
-	@echo "  make format-check           - Check code formatting"
-	@echo "  make lint                   - Run Checkstyle"
-	@echo "  make check                  - Run format check, lint, and tests"
-	@echo "  make run-cluster-pre-check  - Run cluster-pre-check job"
-	@echo "  make run-cluster-start      - Run cluster-start job"
-	@echo "  make run-cluster-check      - Run cluster-check job"
-	@echo "  make run-cluster-stop       - Run cluster-stop job"
-	@echo "  make run-middleware-start   - Run middleware-start job"
-	@echo "  make run-middleware-check   - Run middleware-check job"
-	@echo "  make run-middleware-stop    - Run middleware-stop job"
-	@echo "  make run-application-start  - Run application-start job"
-	@echo "  make run-application-stop   - Run application-stop job"
-	@echo "  make run-online-start       - Run online-start job"
-	@echo "  make run-online-stop        - Run online-stop job"
-	@echo "  make run-monday-morning     - Run Monday morning operation"
-	@echo "  make run-weekday-morning    - Run Tuesday-Friday morning operation"
-	@echo "  make run-weekday-night      - Run Monday-Thursday night operation"
-	@echo "  make run-friday-night       - Run Friday night operation"
+	@echo "  make clean                      - Remove build artifacts"
+	@echo "  make package                    - Build jar package"
+	@echo "  make build                      - Clean and package"
+	@echo "  make verify                     - Run Maven verify phase"
+	@echo "  make test                       - Run tests"
+	@echo "  make format                     - Apply code formatter"
+	@echo "  make format-check               - Check code formatting"
+	@echo "  make lint                       - Run Checkstyle"
+	@echo "  make check                      - Run format check, lint, and tests"
+	@echo "  make run-operation-date-update  - Run operation-date-update job"
+	@echo "  make run-cluster-pre-check      - Run cluster-pre-check job"
+	@echo "  make run-cluster-start          - Run cluster-start job"
+	@echo "  make run-cluster-check          - Run cluster-check job"
+	@echo "  make run-cluster-stop           - Run cluster-stop job"
+	@echo "  make run-middleware-start       - Run middleware-start job"
+	@echo "  make run-middleware-check       - Run middleware-check job"
+	@echo "  make run-middleware-stop        - Run middleware-stop job"
+	@echo "  make run-application-start      - Run application-start job"
+	@echo "  make run-application-stop       - Run application-stop job"
+	@echo "  make run-online-start           - Run online-start job"
+	@echo "  make run-online-stop            - Run online-stop job"
+	@echo "  make run-monday-morning         - Run Monday morning operation"
+	@echo "  make run-weekday-morning        - Run Tuesday-Friday morning operation"
+	@echo "  make run-weekday-night          - Run Monday-Thursday night operation"
+	@echo "  make run-friday-night           - Run Friday night operation"
 
 clean:
 	$(MVN) clean
@@ -97,7 +100,11 @@ run-online-start: package
 run-online-stop: package
 	$(JAVA) online-stop
 
+run-operation-date-update: package
+	$(JAVA) operation-date-update
+
 run-monday-morning: package
+	$(JAVA) operation-date-update
 	$(JAVA) cluster-pre-check
 	$(JAVA) cluster-start
 	$(JAVA) cluster-check
@@ -106,6 +113,7 @@ run-monday-morning: package
 	$(JAVA) online-start
 
 run-weekday-morning: package
+	$(JAVA) operation-date-update
 	$(JAVA) application-start
 	$(JAVA) middleware-check
 	$(JAVA) online-start

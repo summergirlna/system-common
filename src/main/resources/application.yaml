@@ -3,6 +3,9 @@ spring:
     banner-mode: off
 
 system-common:
+  operation-date:
+    file-path: "${SYSTEM_COMMON_OPERATION_DATE_FILE:var/operation-date.txt}"
+
   cluster:
     type: ha-monitor
     ha-monitor:
