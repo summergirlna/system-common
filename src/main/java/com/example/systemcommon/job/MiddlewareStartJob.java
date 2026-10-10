@@ -1,7 +1,7 @@
-package com.example.systemcommon.job.middleware;
+package com.example.systemcommon.job;
 
+import com.example.systemcommon.fw.job.AbstractOperationJob;
 import com.example.systemcommon.fw.operation.OperationResult;
-import com.example.systemcommon.job.AbstractOperationJob;
 import com.example.systemcommon.middleware.MiddlewareStarter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

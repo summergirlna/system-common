@@ -1,4 +1,4 @@
-package com.example.systemcommon.job;
+package com.example.systemcommon.fw.job;
 
 public interface Job {
 

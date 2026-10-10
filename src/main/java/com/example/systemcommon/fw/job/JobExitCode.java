@@ -1,4 +1,4 @@
-package com.example.systemcommon.job;
+package com.example.systemcommon.fw.job;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

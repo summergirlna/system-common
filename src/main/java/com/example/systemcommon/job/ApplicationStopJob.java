@@ -1,8 +1,8 @@
-package com.example.systemcommon.job.application;
+package com.example.systemcommon.job;
 
 import com.example.systemcommon.application.ApplicationStopper;
+import com.example.systemcommon.fw.job.AbstractOperationJob;
 import com.example.systemcommon.fw.operation.OperationResult;
-import com.example.systemcommon.job.AbstractOperationJob;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

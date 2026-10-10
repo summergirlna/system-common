@@ -1,4 +1,4 @@
-package com.example.systemcommon.job;
+package com.example.systemcommon.fw.job;
 
 public record JobResult(JobExitCode exitCode, String message) {
     public static JobResult success(String message) {

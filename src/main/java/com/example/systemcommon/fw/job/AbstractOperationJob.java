@@ -1,4 +1,4 @@
-package com.example.systemcommon.job;
+package com.example.systemcommon.fw.job;
 
 import com.example.systemcommon.fw.operation.OperationResult;
 import lombok.extern.slf4j.Slf4j;

@@ -1,8 +1,8 @@
-package com.example.systemcommon.job.cluster;
+package com.example.systemcommon.job;
 
-import com.example.systemcommon.cluster.ClusterStarter;
+import com.example.systemcommon.fw.job.AbstractOperationJob;
 import com.example.systemcommon.fw.operation.OperationResult;
-import com.example.systemcommon.job.AbstractOperationJob;
+import com.example.systemcommon.middleware.MiddlewareChecker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -10,22 +10,22 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class ClusterStartJob extends AbstractOperationJob {
+public class MiddlewareCheckJob extends AbstractOperationJob {
 
-    private final ClusterStarter clusterStarter;
+    private final MiddlewareChecker middlewareChecker;
 
     @Override
     public String name() {
-        return "cluster-start";
+        return "middleware-check";
     }
 
     @Override
     protected String operationName() {
-        return "クラスタ起動";
+        return "ミドルウェアチェック";
     }
 
     @Override
     protected OperationResult executeOperation() {
-        return clusterStarter.start();
+        return middlewareChecker.check();
     }
 }

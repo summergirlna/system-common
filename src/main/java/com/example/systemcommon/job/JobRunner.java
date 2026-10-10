@@ -1,5 +1,8 @@
 package com.example.systemcommon.job;
 
+import com.example.systemcommon.fw.job.Job;
+import com.example.systemcommon.fw.job.JobExitCode;
+import com.example.systemcommon.fw.job.JobResult;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;

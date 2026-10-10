@@ -1,8 +1,8 @@
-package com.example.systemcommon.job.online;
+package com.example.systemcommon.job;
 
+import com.example.systemcommon.cluster.ClusterStarter;
+import com.example.systemcommon.fw.job.AbstractOperationJob;
 import com.example.systemcommon.fw.operation.OperationResult;
-import com.example.systemcommon.job.AbstractOperationJob;
-import com.example.systemcommon.online.OnlineStopper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -10,22 +10,22 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class OnlineStopJob extends AbstractOperationJob {
+public class ClusterStartJob extends AbstractOperationJob {
 
-    private final OnlineStopper onlineStopper;
+    private final ClusterStarter clusterStarter;
 
     @Override
     public String name() {
-        return "online-stop";
+        return "cluster-start";
     }
 
     @Override
     protected String operationName() {
-        return "オンライン業務停止";
+        return "クラスタ起動";
     }
 
     @Override
     protected OperationResult executeOperation() {
-        return onlineStopper.stop();
+        return clusterStarter.start();
     }
 }
