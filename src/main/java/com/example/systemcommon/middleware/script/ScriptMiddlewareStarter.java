@@ -1,9 +1,9 @@
 package com.example.systemcommon.middleware.script;
 
+import com.example.systemcommon.fw.operation.OperationResult;
+import com.example.systemcommon.fw.script.ScriptOperationExecutor;
 import com.example.systemcommon.middleware.MiddlewareProperties;
 import com.example.systemcommon.middleware.MiddlewareStarter;
-import com.example.systemcommon.operation.OperationResult;
-import com.example.systemcommon.script.ScriptOperationExecutor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

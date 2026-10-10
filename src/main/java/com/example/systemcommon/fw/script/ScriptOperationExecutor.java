@@ -1,8 +1,8 @@
-package com.example.systemcommon.script;
+package com.example.systemcommon.fw.script;
 
-import com.example.systemcommon.command.CommandOperationExecutor;
-import com.example.systemcommon.command.CommandOperationProperties;
-import com.example.systemcommon.operation.OperationResult;
+import com.example.systemcommon.fw.command.CommandOperationExecutor;
+import com.example.systemcommon.fw.command.CommandOperationProperties;
+import com.example.systemcommon.fw.operation.OperationResult;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

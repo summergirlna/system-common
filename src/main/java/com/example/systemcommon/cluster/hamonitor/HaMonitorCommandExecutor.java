@@ -1,8 +1,8 @@
 package com.example.systemcommon.cluster.hamonitor;
 
-import com.example.systemcommon.command.CommandOperationExecutor;
-import com.example.systemcommon.command.CommandOperationProperties;
-import com.example.systemcommon.operation.OperationResult;
+import com.example.systemcommon.fw.command.CommandOperationExecutor;
+import com.example.systemcommon.fw.command.CommandOperationProperties;
+import com.example.systemcommon.fw.operation.OperationResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

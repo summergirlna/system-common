@@ -1,7 +1,7 @@
 package com.example.systemcommon.cluster.hamonitor;
 
 import com.example.systemcommon.cluster.ClusterStarter;
-import com.example.systemcommon.operation.OperationResult;
+import com.example.systemcommon.fw.operation.OperationResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

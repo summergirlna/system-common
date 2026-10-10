@@ -1,6 +1,6 @@
-package com.example.systemcommon.command;
+package com.example.systemcommon.fw.command;
 
-import com.example.systemcommon.operation.OperationResult;
+import com.example.systemcommon.fw.operation.OperationResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

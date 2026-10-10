@@ -1,4 +1,4 @@
-package com.example.systemcommon.command;
+package com.example.systemcommon.fw.command;
 
 import java.time.Duration;
 import java.util.List;

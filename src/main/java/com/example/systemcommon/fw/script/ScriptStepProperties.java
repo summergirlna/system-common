@@ -1,4 +1,4 @@
-package com.example.systemcommon.script;
+package com.example.systemcommon.fw.script;
 
 import java.time.Duration;
 import java.util.List;

@@ -1,10 +1,10 @@
 package com.example.systemcommon.job.middleware;
 
+import com.example.systemcommon.fw.operation.OperationResult;
 import com.example.systemcommon.job.Job;
 import com.example.systemcommon.job.JobExitCode;
 import com.example.systemcommon.job.JobResult;
 import com.example.systemcommon.middleware.MiddlewareStopper;
-import com.example.systemcommon.operation.OperationResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

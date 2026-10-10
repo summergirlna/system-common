@@ -1,4 +1,4 @@
-package com.example.systemcommon.operation;
+package com.example.systemcommon.fw.operation;
 
 public record OperationResult(boolean success, String message) {
 

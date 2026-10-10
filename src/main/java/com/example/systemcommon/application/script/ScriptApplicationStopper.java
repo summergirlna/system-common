@@ -2,8 +2,8 @@ package com.example.systemcommon.application.script;
 
 import com.example.systemcommon.application.ApplicationProperties;
 import com.example.systemcommon.application.ApplicationStopper;
-import com.example.systemcommon.operation.OperationResult;
-import com.example.systemcommon.script.ScriptOperationExecutor;
+import com.example.systemcommon.fw.operation.OperationResult;
+import com.example.systemcommon.fw.script.ScriptOperationExecutor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
