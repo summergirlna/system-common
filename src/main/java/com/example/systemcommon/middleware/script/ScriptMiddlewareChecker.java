@@ -1,5 +1,7 @@
-package com.example.systemcommon.middleware;
+package com.example.systemcommon.middleware.script;
 
+import com.example.systemcommon.middleware.MiddlewareChecker;
+import com.example.systemcommon.middleware.MiddlewareProperties;
 import com.example.systemcommon.operation.OperationResult;
 import com.example.systemcommon.script.ScriptOperationExecutor;
 import lombok.RequiredArgsConstructor;

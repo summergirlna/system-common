@@ -1,5 +1,7 @@
-package com.example.systemcommon.online;
+package com.example.systemcommon.online.script;
 
+import com.example.systemcommon.online.OnlineProperties;
+import com.example.systemcommon.online.OnlineStopper;
 import com.example.systemcommon.operation.OperationResult;
 import com.example.systemcommon.script.ScriptOperationExecutor;
 import lombok.RequiredArgsConstructor;

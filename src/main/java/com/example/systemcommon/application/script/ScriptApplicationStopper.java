@@ -1,5 +1,7 @@
-package com.example.systemcommon.application;
+package com.example.systemcommon.application.script;
 
+import com.example.systemcommon.application.ApplicationProperties;
+import com.example.systemcommon.application.ApplicationStopper;
 import com.example.systemcommon.operation.OperationResult;
 import com.example.systemcommon.script.ScriptOperationExecutor;
 import lombok.RequiredArgsConstructor;
