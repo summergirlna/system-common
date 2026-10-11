@@ -6,6 +6,14 @@ system-common:
   operation-date:
     file-path: "${SYSTEM_COMMON_OPERATION_DATE_FILE:var/operation-date.txt}"
 
+  log-backup:
+    archive-root-directory: "${SYSTEM_COMMON_LOG_ARCHIVE_DIR:log_arc}"
+    compress-after-days: 5
+    delete-after-days: 31
+    targets:
+      - product-name: "application"
+        source-path: "${SYSTEM_COMMON_LOG_DIR:logs}/system-common.log"
+
   cluster:
     type: ha-monitor
     ha-monitor:
