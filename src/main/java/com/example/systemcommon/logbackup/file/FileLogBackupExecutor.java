@@ -86,8 +86,8 @@ public class FileLogBackupExecutor implements LogBackupExecutor {
             return OperationResult.success("ログファイルの退避が完了しました: " + sourcePath);
 
         } catch (IOException e) {
-            log.error("ログファイルの待避に失敗しました。sourcePath={}, backupFilePath={}", sourcePath, backupFilePath, e);
-            return OperationResult.failure("ログファイルの待避に失敗しました: " + sourcePath);
+            log.error("ログファイルの退避に失敗しました。sourcePath={}, backupFilePath={}", sourcePath, backupFilePath, e);
+            return OperationResult.failure("ログファイルの退避に失敗しました: " + sourcePath);
         }
     }
 
