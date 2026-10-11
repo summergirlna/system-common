@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,9 @@ import org.springframework.stereotype.Component;
 public class FileLogBackupExecutor implements LogBackupExecutor {
 
     private static final DateTimeFormatter DATE_DIRECTORY_FORMATTER = DateTimeFormatter.BASIC_ISO_DATE;
+
+    private static final DateTimeFormatter BACKUP_FILE_TIMESTAMP_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 
     private final LogBackupProperties properties;
 
@@ -74,8 +78,7 @@ public class FileLogBackupExecutor implements LogBackupExecutor {
             Files.createDirectories(backupFilePath.getParent());
 
             if (Files.exists(backupFilePath)) {
-                log.error("ログ退避先ファイルがすでに存在します。backupFilePath={}", backupFilePath);
-                return OperationResult.failure("ログ退避先ファイルが既に存在します: " + backupFilePath);
+                renameExistingBackupFile(backupFilePath);
             }
 
             log.info("ログファイルを退避します。sourcePath={}, backupFilePath={}", sourcePath, backupFilePath);
@@ -97,6 +100,31 @@ public class FileLogBackupExecutor implements LogBackupExecutor {
                 .resolve(dateDirectoryName)
                 .resolve(target.productName())
                 .resolve(target.sourcePath().getFileName());
+    }
+
+    private void renameExistingBackupFile(Path backupFilePath) throws IOException {
+        Path renamedBackupFilePath = resolveRenamedBackupFilePath(backupFilePath);
+
+        log.warn(
+                "ログ退避先ファイルがすでに存在するためリネームします。backupFilePath={}, renamedBackupFilePath={}",
+                backupFilePath,
+                renamedBackupFilePath);
+        Files.move(backupFilePath, renamedBackupFilePath);
+    }
+
+    private Path resolveRenamedBackupFilePath(Path backupFilePath) {
+        String timestamp = LocalDateTime.now().format(BACKUP_FILE_TIMESTAMP_FORMATTER);
+        Path parent = backupFilePath.getParent();
+        String fileName = backupFilePath.getFileName().toString();
+        Path renamedPath = parent.resolve(fileName + "." + timestamp);
+
+        int sequence = 1;
+        while (Files.exists(renamedPath)) {
+            renamedPath = parent.resolve(fileName + "." + timestamp + "." + sequence);
+            sequence++;
+        }
+
+        return renamedPath;
     }
 
     private void truncate(Path sourcePath) throws IOException {
