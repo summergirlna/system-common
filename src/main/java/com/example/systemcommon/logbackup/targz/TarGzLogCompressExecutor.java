@@ -37,14 +37,20 @@ public class TarGzLogCompressExecutor implements LogCompressExecutor {
     public OperationResult compress() {
         log.info("ログ圧縮処理を開始します。");
 
+        // 退避先ルートディレクトリは事前に作成しておく前提。
+        // 存在しない場合は設定誤りまたは運用準備不足として異常終了させる。
         Path archiveRootDirectory = properties.archiveRootDirectory();
         if (!Files.isDirectory(archiveRootDirectory)) {
             log.error("ログ退避先ルートディレクトリが存在しません。archiveRootDirectory={}", archiveRootDirectory);
             return OperationResult.failure("ログ退避先ルートディレクトリが存在しません: " + archiveRootDirectory);
         }
 
+        // システム日付だと日付跨り処理をした際にわかりにくいので、
+        // 常に運用日付を起点にする。
         LocalDate operationDate = operationDateProvider.getOperationDate();
 
+        // 日付ディレクトリを走査し、圧縮する対象があれば圧縮する。
+        // 1件でも失敗した場合は、後続を処理せずに異常終了させる。
         try {
             for (LogCompressTarget target :
                     targetResolver.resolve(archiveRootDirectory, operationDate, properties.compressAfterDays())) {
@@ -63,13 +69,18 @@ public class TarGzLogCompressExecutor implements LogCompressExecutor {
     }
 
     private OperationResult compressTarget(LogCompressTarget target) {
+        // ex. log_arc/20261012
         Path dateDirectory = target.dateDirectory();
+        // ex. log_arc/20261012.tar.gz
         Path tarGzPath = pathResolver.resolveTarGzPath(dateDirectory);
+
+        // 圧縮先ファイルが既に存在する場合は異常終了させる。
         if (Files.exists(tarGzPath)) {
             log.error("圧縮先ファイルが既に存在します。tarGzPath={}", tarGzPath);
             return OperationResult.failure("圧縮先ファイルが既に存在します: " + tarGzPath);
         }
 
+        // log_arc/20261012 を圧縮し、元ディレクトリは削除する。
         try {
             log.info("日付ディレクトリを圧縮します。dateDirectory={}, tarGzPath={}", target, tarGzPath);
             archiveCreator.create(dateDirectory, tarGzPath);

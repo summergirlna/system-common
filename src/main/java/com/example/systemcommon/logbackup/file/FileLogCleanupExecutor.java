@@ -29,14 +29,20 @@ public class FileLogCleanupExecutor implements LogCleanupExecutor {
     public OperationResult cleanup() {
         log.info("ログ削除処理を開始します。");
 
+        // 退避先ルートディレクトリは事前に作成しておく前提。
+        // 存在しない場合は設定誤りまたは運用準備不足として異常終了させる。
         Path archiveRootDirectory = properties.archiveRootDirectory();
         if (!Files.isDirectory(archiveRootDirectory)) {
             log.error("ログ退避先ルートディレクトリが存在しません。archiveRootDirectory={}", archiveRootDirectory);
             return OperationResult.failure("ログ退避先ルートディレクトリが存在しません: " + archiveRootDirectory);
         }
 
+        // システム日付だと日付跨り処理をした際にわかりにくいので、
+        // 常に運用日付を起点にする。
         LocalDate operationDate = operationDateProvider.getOperationDate();
 
+        // log_arc/20261012.tar.gz のようなファイルを走査し、
+        // 保持期限を過ぎていれば削除する。
         try {
             for (LogCleanupTarget target :
                     targetResolver.resolve(archiveRootDirectory, operationDate, properties.deleteAfterDays())) {
@@ -55,6 +61,7 @@ public class FileLogCleanupExecutor implements LogCleanupExecutor {
     }
 
     private OperationResult cleanupTarget(LogCleanupTarget target) {
+        // ex. log_arc/20261012.tar.gz
         Path tarGzPath = target.tarGzPath();
 
         try {
