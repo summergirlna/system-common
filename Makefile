@@ -1,25 +1,5 @@
 MVN := /bin/sh /Users/kuritayu/Library/Application\ Support/JetBrains/IntelliJIdea2026.2/plugins/maven-plugin/lib/maven3/bin/mvn
-JAR := target/system-common-1.0-SNAPSHOT.jar
-LOG_DIR := logs
-OPERATION_DATE_FILE := var/operation-date.txt
-LOG_ARCHIVE_DIR := log_arc
-LOG_COMPRESS_AFTER_DAYS := 5
-LOG_DELETE_AFTER_DAYS := 31
-AUDIT_LOG_DIR := logs
-AUDIT_LOG_ARCHIVE_DIR := audit_log_arc
-AUDIT_LOG_COMPRESS_AFTER_DAYS := 31
-AUDIT_LOG_DELETE_AFTER_DAYS := 366
-
-JAVA := SYSTEM_COMMON_LOG_DIR=$(LOG_DIR) \
-	SYSTEM_COMMON_OPERATION_DATE_FILE=$(OPERATION_DATE_FILE) \
-	SYSTEM_COMMON_LOG_ARCHIVE_DIR=$(LOG_ARCHIVE_DIR) \
-	SYSTEM_COMMON_LOG_COMPRESS_AFTER_DAYS=$(LOG_COMPRESS_AFTER_DAYS) \
-	SYSTEM_COMMON_LOG_DELETE_AFTER_DAYS=$(LOG_DELETE_AFTER_DAYS) \
-	SYSTEM_COMMON_AUDIT_LOG_DIR=$(AUDIT_LOG_DIR) \
-	SYSTEM_COMMON_AUDIT_LOG_ARCHIVE_DIR=$(AUDIT_LOG_ARCHIVE_DIR) \
-	SYSTEM_COMMON_AUDIT_LOG_COMPRESS_AFTER_DAYS=$(AUDIT_LOG_COMPRESS_AFTER_DAYS) \
-	SYSTEM_COMMON_AUDIT_LOG_DELETE_AFTER_DAYS=$(AUDIT_LOG_DELETE_AFTER_DAYS) \
-	java -jar $(JAR)
+RUN_JOB := ./system-common-run.sh
 
 .PHONY: help clean package build verify test format format-check lint check run \
 	run-monday-morning run-weekday-morning run-weekday-night run-friday-night
@@ -70,41 +50,41 @@ check:
 
 run: package
 	@test -n "$(JOB)" || (echo "JOB is required. Usage: make run JOB=<job-name>" && exit 1)
-	$(JAVA) $(JOB)
+	$(RUN_JOB) $(JOB)
 
 run-monday-morning: package
-	$(JAVA) operation-date-update
-	$(JAVA) cluster-pre-check
-	$(JAVA) cluster-start
-	$(JAVA) cluster-check
-	$(JAVA) middleware-start
-	$(JAVA) middleware-check
-	$(JAVA) online-start
+	$(RUN_JOB) operation-date-update
+	$(RUN_JOB) cluster-pre-check
+	$(RUN_JOB) cluster-start
+	$(RUN_JOB) cluster-check
+	$(RUN_JOB) middleware-start
+	$(RUN_JOB) middleware-check
+	$(RUN_JOB) online-start
 
 run-weekday-morning: package
-	$(JAVA) operation-date-update
-	$(JAVA) application-start
-	$(JAVA) middleware-check
-	$(JAVA) online-start
+	$(RUN_JOB) operation-date-update
+	$(RUN_JOB) application-start
+	$(RUN_JOB) middleware-check
+	$(RUN_JOB) online-start
 
 run-weekday-night: package
-	$(JAVA) online-stop
-	$(JAVA) application-stop
-	$(JAVA) log-backup
-	$(JAVA) log-compress
-	$(JAVA) log-cleanup
-	$(JAVA) audit-log-backup
-	$(JAVA) audit-log-compress
-	$(JAVA) audit-log-cleanup
+	$(RUN_JOB) online-stop
+	$(RUN_JOB) application-stop
+	$(RUN_JOB) log-backup
+	$(RUN_JOB) log-compress
+	$(RUN_JOB) log-cleanup
+	$(RUN_JOB) audit-log-backup
+	$(RUN_JOB) audit-log-compress
+	$(RUN_JOB) audit-log-cleanup
 
 run-friday-night: package
-	$(JAVA) online-stop
-	$(JAVA) application-stop
-	$(JAVA) log-backup
-	$(JAVA) log-compress
-	$(JAVA) log-cleanup
-	$(JAVA) audit-log-backup
-	$(JAVA) audit-log-compress
-	$(JAVA) audit-log-cleanup
-	$(JAVA) middleware-stop
-	$(JAVA) cluster-stop
+	$(RUN_JOB) online-stop
+	$(RUN_JOB) application-stop
+	$(RUN_JOB) log-backup
+	$(RUN_JOB) log-compress
+	$(RUN_JOB) log-cleanup
+	$(RUN_JOB) audit-log-backup
+	$(RUN_JOB) audit-log-compress
+	$(RUN_JOB) audit-log-cleanup
+	$(RUN_JOB) middleware-stop
+	$(RUN_JOB) cluster-stop
