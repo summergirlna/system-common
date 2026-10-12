@@ -25,6 +25,8 @@ public class FileLogCleanupExecutor implements LogCleanupExecutor {
 
     private final LogCleanupTargetResolver targetResolver;
 
+    private final FileLogCleanupTargetProcessor targetProcessor;
+
     @Override
     public OperationResult cleanup() {
         log.info("ログ削除処理を開始します。");
@@ -46,7 +48,7 @@ public class FileLogCleanupExecutor implements LogCleanupExecutor {
         try {
             for (LogCleanupTarget target :
                     targetResolver.resolve(archiveRootDirectory, operationDate, properties.deleteAfterDays())) {
-                OperationResult result = cleanupTarget(target);
+                OperationResult result = targetProcessor.process(target);
                 if (result.isFailure()) {
                     return result;
                 }
@@ -58,20 +60,5 @@ public class FileLogCleanupExecutor implements LogCleanupExecutor {
 
         log.info("ログ削除処理が正常終了しました。");
         return OperationResult.success("ログ削除処理が正常終了しました。");
-    }
-
-    private OperationResult cleanupTarget(LogCleanupTarget target) {
-        // ex. log_arc/20261012.tar.gz
-        Path tarGzPath = target.tarGzPath();
-
-        try {
-            log.info("圧縮ログファイルを削除します。tarGzPath={}, date={}", tarGzPath, target.date());
-            Files.delete(tarGzPath);
-            log.info("圧縮ログファイルを削除しました。tarGzPath={}", tarGzPath);
-            return OperationResult.success("圧縮ログファイルを削除しました: " + tarGzPath);
-        } catch (IOException e) {
-            log.error("圧縮ログファイルの削除に失敗しました。tarGzPath={}", tarGzPath, e);
-            return OperationResult.failure("圧縮ログファイルの削除に失敗しました: " + tarGzPath);
-        }
     }
 }

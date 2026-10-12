@@ -136,9 +136,8 @@ class FileLogBackupExecutorTest {
         return new FileLogBackupExecutor(
                 properties,
                 operationDateProvider,
-                new LogBackupPathResolver(),
-                new TimestampFileRenamer(clock),
-                new FileTruncator());
+                new FileLogBackupTargetProcessor(
+                        new LogBackupPathResolver(), new TimestampFileRenamer(clock), new FileTruncator()));
     }
 
     private Path createDirectory(String path) throws Exception {

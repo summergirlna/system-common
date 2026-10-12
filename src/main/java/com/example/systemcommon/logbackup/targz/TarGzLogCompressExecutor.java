@@ -1,9 +1,6 @@
 package com.example.systemcommon.logbackup.targz;
 
-import com.example.systemcommon.fw.file.DirectoryDeleter;
 import com.example.systemcommon.fw.operation.OperationResult;
-import com.example.systemcommon.fw.targz.TarGzArchiveCreator;
-import com.example.systemcommon.logbackup.LogBackupPathResolver;
 import com.example.systemcommon.logbackup.LogBackupProperties;
 import com.example.systemcommon.logbackup.LogCompressExecutor;
 import com.example.systemcommon.logbackup.LogCompressTarget;
@@ -26,13 +23,9 @@ public class TarGzLogCompressExecutor implements LogCompressExecutor {
 
     private final OperationDateProvider operationDateProvider;
 
-    private final LogBackupPathResolver pathResolver;
-
     private final LogCompressTargetResolver targetResolver;
 
-    private final TarGzArchiveCreator archiveCreator;
-
-    private final DirectoryDeleter directoryDeleter;
+    private final TarGzLogCompressTargetProcessor targetProcessor;
 
     @Override
     public OperationResult compress() {
@@ -55,7 +48,7 @@ public class TarGzLogCompressExecutor implements LogCompressExecutor {
         try {
             for (LogCompressTarget target :
                     targetResolver.resolve(archiveRootDirectory, operationDate, properties.compressAfterDays())) {
-                OperationResult result = compressTarget(target);
+                OperationResult result = targetProcessor.process(target);
                 if (result.isFailure()) {
                     return result;
                 }
@@ -67,31 +60,5 @@ public class TarGzLogCompressExecutor implements LogCompressExecutor {
 
         log.info("ログ圧縮処理が正常終了しました。");
         return OperationResult.success("ログ圧縮処理が正常終了しました。");
-    }
-
-    private OperationResult compressTarget(LogCompressTarget target) {
-        // ex. log_arc/20261012
-        Path dateDirectory = target.dateDirectory();
-        // ex. log_arc/20261012.tar.gz
-        Path tarGzPath = pathResolver.resolveTarGzPath(dateDirectory);
-
-        // 圧縮先ファイルが既に存在する場合は異常終了させる。
-        if (Files.exists(tarGzPath)) {
-            log.error("圧縮先ファイルが既に存在します。tarGzPath={}", tarGzPath);
-            return OperationResult.failure("圧縮先ファイルが既に存在します: " + tarGzPath);
-        }
-
-        // log_arc/20261012 を圧縮し、元ディレクトリは削除する。
-        try {
-            log.info("日付ディレクトリを圧縮します。dateDirectory={}, tarGzPath={}", target, tarGzPath);
-            archiveCreator.create(dateDirectory, tarGzPath);
-            directoryDeleter.delete(dateDirectory);
-            log.info("日付ディレクトリの圧縮が完了しました。dateDirectory={}, tarGzPath={}", target, tarGzPath);
-            return OperationResult.success("日付ディレクトリの圧縮が完了しました: " + target);
-
-        } catch (IOException e) {
-            log.error("日付ディレクトリの圧縮に失敗しました。dateDirectory={}, tarGzPath={}", target, tarGzPath);
-            return OperationResult.failure("日付ディレクトリの圧縮に失敗しました: " + target);
-        }
     }
 }
