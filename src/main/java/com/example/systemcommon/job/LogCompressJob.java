@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class LogCompress extends AbstractOperationJob {
+public class LogCompressJob extends AbstractOperationJob {
 
     private final LogCompressExecutor logCompressExecutor;
 
