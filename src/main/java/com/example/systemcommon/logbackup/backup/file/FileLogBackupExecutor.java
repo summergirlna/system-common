@@ -1,9 +1,9 @@
-package com.example.systemcommon.logbackup.file;
+package com.example.systemcommon.logbackup.backup.file;
 
 import com.example.systemcommon.fw.operation.OperationResult;
-import com.example.systemcommon.logbackup.LogBackupExecutor;
 import com.example.systemcommon.logbackup.LogBackupProperties;
-import com.example.systemcommon.logbackup.LogBackupTargetProperties;
+import com.example.systemcommon.logbackup.backup.LogBackupExecutor;
+import com.example.systemcommon.logbackup.backup.LogBackupTargetProperties;
 import com.example.systemcommon.operationdate.OperationDateProvider;
 import java.nio.file.Files;
 import java.nio.file.Path;

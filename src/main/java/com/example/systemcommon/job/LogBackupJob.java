@@ -4,7 +4,7 @@ import com.example.systemcommon.fw.job.Job;
 import com.example.systemcommon.fw.job.JobExitCode;
 import com.example.systemcommon.fw.job.JobResult;
 import com.example.systemcommon.fw.operation.OperationResult;
-import com.example.systemcommon.logbackup.LogBackupOperation;
+import com.example.systemcommon.logbackup.backup.LogBackupOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

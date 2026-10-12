@@ -1,7 +1,7 @@
-package com.example.systemcommon.logbackup.file;
+package com.example.systemcommon.logbackup.cleanup.file;
 
 import com.example.systemcommon.fw.operation.OperationResult;
-import com.example.systemcommon.logbackup.LogCleanupTarget;
+import com.example.systemcommon.logbackup.cleanup.LogCleanupTarget;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

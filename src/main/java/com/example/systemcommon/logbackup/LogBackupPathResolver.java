@@ -1,5 +1,6 @@
 package com.example.systemcommon.logbackup;
 
+import com.example.systemcommon.logbackup.backup.LogBackupTargetProperties;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

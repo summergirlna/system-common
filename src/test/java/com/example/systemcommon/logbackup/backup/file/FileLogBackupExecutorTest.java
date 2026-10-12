@@ -1,4 +1,4 @@
-package com.example.systemcommon.logbackup.file;
+package com.example.systemcommon.logbackup.backup.file;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,7 +7,7 @@ import com.example.systemcommon.fw.file.TimestampFileRenamer;
 import com.example.systemcommon.fw.operation.OperationResult;
 import com.example.systemcommon.logbackup.LogBackupPathResolver;
 import com.example.systemcommon.logbackup.LogBackupProperties;
-import com.example.systemcommon.logbackup.LogBackupTargetProperties;
+import com.example.systemcommon.logbackup.backup.LogBackupTargetProperties;
 import com.example.systemcommon.operationdate.OperationDateProvider;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;

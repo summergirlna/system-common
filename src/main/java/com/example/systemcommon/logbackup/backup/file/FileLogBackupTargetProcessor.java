@@ -1,10 +1,10 @@
-package com.example.systemcommon.logbackup.file;
+package com.example.systemcommon.logbackup.backup.file;
 
 import com.example.systemcommon.fw.file.FileTruncator;
 import com.example.systemcommon.fw.file.TimestampFileRenamer;
 import com.example.systemcommon.fw.operation.OperationResult;
 import com.example.systemcommon.logbackup.LogBackupPathResolver;
-import com.example.systemcommon.logbackup.LogBackupTargetProperties;
+import com.example.systemcommon.logbackup.backup.LogBackupTargetProperties;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

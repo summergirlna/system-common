@@ -1,4 +1,4 @@
-package com.example.systemcommon.logbackup;
+package com.example.systemcommon.logbackup.logoutput;
 
 import com.example.systemcommon.fw.operation.OperationResult;
 import java.nio.file.Path;

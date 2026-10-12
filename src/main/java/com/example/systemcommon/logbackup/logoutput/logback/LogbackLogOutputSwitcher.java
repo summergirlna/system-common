@@ -1,10 +1,10 @@
-package com.example.systemcommon.logbackup.logback;
+package com.example.systemcommon.logbackup.logoutput.logback;
 
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.FileAppender;
 import com.example.systemcommon.fw.operation.OperationResult;
-import com.example.systemcommon.logbackup.LogOutputSwitcher;
+import com.example.systemcommon.logbackup.logoutput.LogOutputSwitcher;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

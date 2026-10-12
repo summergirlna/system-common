@@ -1,10 +1,10 @@
-package com.example.systemcommon.logbackup.targz;
+package com.example.systemcommon.logbackup.compress.targz;
 
 import com.example.systemcommon.fw.file.DirectoryDeleter;
 import com.example.systemcommon.fw.operation.OperationResult;
 import com.example.systemcommon.fw.targz.TarGzArchiveCreator;
 import com.example.systemcommon.logbackup.LogBackupPathResolver;
-import com.example.systemcommon.logbackup.LogCompressTarget;
+import com.example.systemcommon.logbackup.compress.LogCompressTarget;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

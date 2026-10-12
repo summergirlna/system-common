@@ -1,5 +1,6 @@
 package com.example.systemcommon.logbackup;
 
+import com.example.systemcommon.logbackup.backup.LogBackupTargetProperties;
 import java.nio.file.Path;
 import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;

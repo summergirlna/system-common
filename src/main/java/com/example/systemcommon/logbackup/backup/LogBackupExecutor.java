@@ -1,4 +1,4 @@
-package com.example.systemcommon.logbackup;
+package com.example.systemcommon.logbackup.backup;
 
 import com.example.systemcommon.fw.operation.OperationResult;
 

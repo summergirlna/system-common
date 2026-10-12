@@ -1,6 +1,8 @@
-package com.example.systemcommon.logbackup;
+package com.example.systemcommon.logbackup.backup;
 
 import com.example.systemcommon.fw.operation.OperationResult;
+import com.example.systemcommon.logbackup.LogBackupProperties;
+import com.example.systemcommon.logbackup.logoutput.LogOutputSwitcher;
 import java.nio.file.Path;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
