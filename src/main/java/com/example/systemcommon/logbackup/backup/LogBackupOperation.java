@@ -29,15 +29,7 @@ public class LogBackupOperation {
     }
 
     public OperationResult execute() {
-        if (requiresLogOutputSwitch()) {
-            return logOutputSwitcher.executeWithTemporaryOutput(this::executeBackup);
-        }
-
-        return executeBackup();
-    }
-
-    private boolean requiresLogOutputSwitch() {
-        return logOutputSwitcher.isSwitchRequired(sourcePaths());
+        return logOutputSwitcher.executeWithTemporaryOutput(sourcePaths(), this::executeBackup);
     }
 
     private List<Path> sourcePaths() {

@@ -6,7 +6,5 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public interface LogOutputSwitcher {
-    boolean isSwitchRequired(List<Path> targetPaths);
-
-    OperationResult executeWithTemporaryOutput(Supplier<OperationResult> operation);
+    OperationResult executeWithTemporaryOutput(List<Path> targetPaths, Supplier<OperationResult> operation);
 }

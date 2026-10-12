@@ -18,6 +18,20 @@
         </encoder>
     </appender>
 
+    <appender name="AUDIT_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_DIR}/${APP_NAME}-audit.log</file>
+        <append>true</append>
+
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <logger name="AUDIT" level="INFO" additivity="false">
+        <appender-ref ref="AUDIT_FILE"/>
+    </logger>
+
     <logger name="com.example.systemcommon" level="INFO"/>
 
     <root level="INFO">

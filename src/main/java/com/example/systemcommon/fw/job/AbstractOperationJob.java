@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class AbstractOperationJob implements Job {
 
     @Override
-    public final JobResult execute() {
+    public JobResult execute() {
         String operationName = operationName();
 
         log.info("{}ジョブを開始します。", operationName);

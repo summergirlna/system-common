@@ -12,4 +12,4 @@ system-common:
     delete-after-days: "${SYSTEM_COMMON_AUDIT_LOG_DELETE_AFTER_DAYS:366}"
     targets:
       - product-name: "audit"
-        source-path: "${SYSTEM_COMMON_AUDIT_LOG_DIR:logs}/audit.log"
+        source-path: "${SYSTEM_COMMON_AUDIT_LOG_DIR:logs}/system-common-audit.log"
