@@ -3,14 +3,16 @@ JAR := target/system-common-1.0-SNAPSHOT.jar
 LOG_DIR := logs
 OPERATION_DATE_FILE := var/operation-date.txt
 LOG_ARCHIVE_DIR := log_arc
-JAVA := SYSTEM_COMMON_LOG_DIR=$(LOG_DIR) SYSTEM_COMMON_OPERATION_DATE_FILE=$(OPERATION_DATE_FILE) SYSTEM_COMMON_LOG_ARCHIVE_DIR=$(LOG_ARCHIVE_DIR) java -jar $(JAR)
+AUDIT_LOG_DIR := logs
+AUDIT_LOG_ARCHIVE_DIR := audit_log_arc
+JAVA := SYSTEM_COMMON_LOG_DIR=$(LOG_DIR) \
+	SYSTEM_COMMON_OPERATION_DATE_FILE=$(OPERATION_DATE_FILE) \
+	SYSTEM_COMMON_LOG_ARCHIVE_DIR=$(LOG_ARCHIVE_DIR) \
+	SYSTEM_COMMON_AUDIT_LOG_DIR=$(AUDIT_LOG_DIR) \
+	SYSTEM_COMMON_AUDIT_LOG_ARCHIVE_DIR=$(AUDIT_LOG_ARCHIVE_DIR) \
+	java -jar $(JAR)
 
-.PHONY: help clean package build verify test format format-check lint check \
-	run-operation-date-update run-log-backup run-log-compress run-log-cleanup \
-	run-cluster-pre-check run-cluster-start run-cluster-check run-cluster-stop \
-	run-middleware-start run-middleware-check run-middleware-stop \
-	run-application-start run-application-stop \
-	run-online-start run-online-stop \
+.PHONY: help clean package build verify test format format-check lint check run \
 	run-monday-morning run-weekday-morning run-weekday-night run-friday-night
 
 help:
@@ -24,21 +26,7 @@ help:
 	@echo "  make format-check               - Check code formatting"
 	@echo "  make lint                       - Run Checkstyle"
 	@echo "  make check                      - Run format check, lint, and tests"
-	@echo "  make run-operation-date-update  - Run operation-date-update job"
-	@echo "  make run-log-backup             - Run log-backup job"
-	@echo "  make run-log-compress           - Run log-compress job"
-	@echo "  make run-log-cleanup            - Run log-cleanup job"
-	@echo "  make run-cluster-pre-check      - Run cluster-pre-check job"
-	@echo "  make run-cluster-start          - Run cluster-start job"
-	@echo "  make run-cluster-check          - Run cluster-check job"
-	@echo "  make run-cluster-stop           - Run cluster-stop job"
-	@echo "  make run-middleware-start       - Run middleware-start job"
-	@echo "  make run-middleware-check       - Run middleware-check job"
-	@echo "  make run-middleware-stop        - Run middleware-stop job"
-	@echo "  make run-application-start      - Run application-start job"
-	@echo "  make run-application-stop       - Run application-stop job"
-	@echo "  make run-online-start           - Run online-start job"
-	@echo "  make run-online-stop            - Run online-stop job"
+	@echo "  make run JOB=<job-name>         - Run arbitrary job"
 	@echo "  make run-monday-morning         - Run Monday morning operation"
 	@echo "  make run-weekday-morning        - Run Tuesday-Friday morning operation"
 	@echo "  make run-weekday-night          - Run Monday-Thursday night operation"
@@ -71,50 +59,9 @@ lint:
 check:
 	$(MVN) spotless:check checkstyle:check test
 
-run-cluster-pre-check: package
-	$(JAVA) cluster-pre-check
-
-run-cluster-start: package
-	$(JAVA) cluster-start
-
-run-cluster-check: package
-	$(JAVA) cluster-check
-
-run-cluster-stop: package
-	$(JAVA) cluster-stop
-
-run-middleware-start: package
-	$(JAVA) middleware-start
-
-run-middleware-check: package
-	$(JAVA) middleware-check
-
-run-middleware-stop: package
-	$(JAVA) middleware-stop
-
-run-application-start: package
-	$(JAVA) application-start
-
-run-application-stop: package
-	$(JAVA) application-stop
-
-run-online-start: package
-	$(JAVA) online-start
-
-run-online-stop: package
-	$(JAVA) online-stop
-
-run-operation-date-update: package
-	$(JAVA) operation-date-update
-
-run-log-backup: package
-	$(JAVA) log-backup
-
-run-log-compress: package
-	$(JAVA) log-compress
-
-run-log-cleanup: package
-	$(JAVA) log-cleanup
+run: package
+	@test -n "$(JOB)" || (echo "JOB is required. Usage: make run JOB=<job-name>" && exit 1)
+	$(JAVA) $(JOB)
 
 run-monday-morning: package
 	$(JAVA) operation-date-update
@@ -137,6 +84,9 @@ run-weekday-night: package
 	$(JAVA) log-backup
 	$(JAVA) log-compress
 	$(JAVA) log-cleanup
+	$(JAVA) audit-log-backup
+	$(JAVA) audit-log-compress
+	$(JAVA) audit-log-cleanup
 
 run-friday-night: package
 	$(JAVA) online-stop
@@ -144,5 +94,8 @@ run-friday-night: package
 	$(JAVA) log-backup
 	$(JAVA) log-compress
 	$(JAVA) log-cleanup
+	$(JAVA) audit-log-backup
+	$(JAVA) audit-log-compress
+	$(JAVA) audit-log-cleanup
 	$(JAVA) middleware-stop
 	$(JAVA) cluster-stop

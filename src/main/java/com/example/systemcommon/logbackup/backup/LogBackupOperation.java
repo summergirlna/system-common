@@ -5,21 +5,28 @@ import com.example.systemcommon.logbackup.LogBackupProperties;
 import com.example.systemcommon.logbackup.logoutput.LogOutputSwitcher;
 import java.nio.file.Path;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-@RequiredArgsConstructor
 public class LogBackupOperation {
 
-    @Qualifier("fileLogBackupExecutor") private final LogBackupExecutor logBackupExecutor;
+    private final LogBackupExecutor logBackupExecutor;
 
     private final LogBackupProperties properties;
 
     private final LogOutputSwitcher logOutputSwitcher;
+
+    public LogBackupOperation(
+            @Qualifier("fileLogBackupExecutor") LogBackupExecutor logBackupExecutor,
+            LogBackupProperties properties,
+            LogOutputSwitcher logOutputSwitcher) {
+        this.logBackupExecutor = logBackupExecutor;
+        this.properties = properties;
+        this.logOutputSwitcher = logOutputSwitcher;
+    }
 
     public OperationResult execute() {
         if (requiresLogOutputSwitch()) {

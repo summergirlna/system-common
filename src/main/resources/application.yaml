@@ -14,6 +14,14 @@ system-common:
       - product-name: "application"
         source-path: "${SYSTEM_COMMON_LOG_DIR:logs}/system-common.log"
 
+  audit-log-backup:
+    archive-root-directory: "${SYSTEM_COMMON_AUDIT_LOG_ARCHIVE_DIR:audit_log_arc}"
+    compress-after-days: 31
+    delete-after-days: 366
+    targets:
+      - product-name: "audit"
+        source-path: "${SYSTEM_COMMON_AUDIT_LOG_DIR:logs}/audit.log"
+
   cluster:
     type: ha-monitor
     ha-monitor:
