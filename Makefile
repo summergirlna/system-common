@@ -134,9 +134,15 @@ run-weekday-morning: package
 run-weekday-night: package
 	$(JAVA) online-stop
 	$(JAVA) application-stop
+	$(JAVA) log-backup
+	$(JAVA) log-compress
+	$(JAVA) log-cleanup
 
 run-friday-night: package
 	$(JAVA) online-stop
 	$(JAVA) application-stop
+	$(JAVA) log-backup
+	$(JAVA) log-compress
+	$(JAVA) log-cleanup
 	$(JAVA) middleware-stop
 	$(JAVA) cluster-stop
