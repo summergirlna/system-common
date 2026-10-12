@@ -59,7 +59,7 @@ public class TarGzLogCompressExecutor implements LogCompressExecutor {
         }
 
         log.info("ログ圧縮処理が正常終了しました。");
-        return OperationResult.success("ログ圧縮処理が正常終了しました");
+        return OperationResult.success("ログ圧縮処理が正常終了しました。");
     }
 
     private OperationResult compressTarget(LogCompressTarget target) {

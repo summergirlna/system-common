@@ -1,0 +1,70 @@
+package com.example.systemcommon.logbackup.file;
+
+import com.example.systemcommon.fw.operation.OperationResult;
+import com.example.systemcommon.logbackup.LogBackupProperties;
+import com.example.systemcommon.logbackup.LogCleanupExecutor;
+import com.example.systemcommon.logbackup.LogCleanupTarget;
+import com.example.systemcommon.logbackup.LogCleanupTargetResolver;
+import com.example.systemcommon.operationdate.OperationDateProvider;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDate;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+@Component
+@Slf4j
+@RequiredArgsConstructor
+public class FileLogCleanupExecutor implements LogCleanupExecutor {
+
+    private final LogBackupProperties properties;
+
+    private final OperationDateProvider operationDateProvider;
+
+    private final LogCleanupTargetResolver targetResolver;
+
+    @Override
+    public OperationResult cleanup() {
+        log.info("ログ削除処理を開始します。");
+
+        Path archiveRootDirectory = properties.archiveRootDirectory();
+        if (!Files.isDirectory(archiveRootDirectory)) {
+            log.error("ログ退避先ルートディレクトリが存在しません。archiveRootDirectory={}", archiveRootDirectory);
+            return OperationResult.failure("ログ退避先ルートディレクトリが存在しません: " + archiveRootDirectory);
+        }
+
+        LocalDate operationDate = operationDateProvider.getOperationDate();
+
+        try {
+            for (LogCleanupTarget target :
+                    targetResolver.resolve(archiveRootDirectory, operationDate, properties.deleteAfterDays())) {
+                OperationResult result = cleanupTarget(target);
+                if (result.isFailure()) {
+                    return result;
+                }
+            }
+        } catch (IOException e) {
+            log.error("ログ削除対象ファイルの解決に失敗しました。archiveRootDirectory={}", archiveRootDirectory, e);
+            return OperationResult.failure("ログ削除対象ファイルの解決に失敗しました: " + archiveRootDirectory);
+        }
+
+        log.info("ログ削除処理が正常終了しました。");
+        return OperationResult.success("ログ削除処理が正常終了しました。");
+    }
+
+    private OperationResult cleanupTarget(LogCleanupTarget target) {
+        Path tarGzPath = target.tarGzPath();
+
+        try {
+            log.info("圧縮ログファイルを削除します。tarGzPath={}, date={}", tarGzPath, target.date());
+            Files.delete(tarGzPath);
+            log.info("圧縮ログファイルを削除しました。tarGzPath={}", tarGzPath);
+            return OperationResult.success("圧縮ログファイルを削除しました: " + tarGzPath);
+        } catch (IOException e) {
+            log.error("圧縮ログファイルの削除に失敗しました。tarGzPath={}", tarGzPath, e);
+            return OperationResult.failure("圧縮ログファイルの削除に失敗しました: " + tarGzPath);
+        }
+    }
+}
