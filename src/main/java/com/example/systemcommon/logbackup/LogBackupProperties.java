@@ -7,7 +7,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "system-common.log-backup")
 public record LogBackupProperties(
-        Path archiveRootDirectory,
-        int compressAfterDays,
-        int deleteAfterDays,
-        List<LogBackupTargetProperties> targets) {}
+        Path archiveRootDirectory, int compressAfterDays, int deleteAfterDays, List<LogBackupTargetProperties> targets)
+        implements LogArchiveProperties {}

@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class LogBackupOperation {
 
-    private final LogBackupExecutor logBackupExecutor;
+    @Qualifier("fileLogBackupExecutor") private final LogBackupExecutor logBackupExecutor;
 
     private final LogBackupProperties properties;
 
