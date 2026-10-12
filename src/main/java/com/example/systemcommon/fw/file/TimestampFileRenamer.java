@@ -1,4 +1,4 @@
-package com.example.systemcommon.logbackup.file;
+package com.example.systemcommon.fw.file;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class ExistingBackupFileRenamer {
+public class TimestampFileRenamer {
 
     private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 

@@ -1,5 +1,7 @@
 package com.example.systemcommon.logbackup.file;
 
+import com.example.systemcommon.fw.file.FileTruncator;
+import com.example.systemcommon.fw.file.TimestampFileRenamer;
 import com.example.systemcommon.fw.operation.OperationResult;
 import com.example.systemcommon.logbackup.LogBackupExecutor;
 import com.example.systemcommon.logbackup.LogBackupPathResolver;
@@ -30,9 +32,9 @@ public class FileLogBackupExecutor implements LogBackupExecutor {
 
     private final LogBackupPathResolver pathResolver;
 
-    private final ExistingBackupFileRenamer existingBackupFileRenamer;
+    private final TimestampFileRenamer timestampFileRenamer;
 
-    private final LogFileTruncator logFileTruncator;
+    private final FileTruncator fileTruncator;
 
     @Override
     public OperationResult backup() {
@@ -93,13 +95,13 @@ public class FileLogBackupExecutor implements LogBackupExecutor {
 
             // 同一運用日に再実行された場合、ログを上書きせず、
             // 元ファイルをタイムスタンプ付きファイル名にリネームする。
-            existingBackupFileRenamer.renameIfExists(backupFilePath);
+            timestampFileRenamer.renameIfExists(backupFilePath);
 
             log.info("ログファイルを退避します。sourcePath={}, backupFilePath={}", sourcePath, backupFilePath);
             Files.copy(sourcePath, backupFilePath, StandardCopyOption.COPY_ATTRIBUTES);
 
             // コピーに成功した後、元ファイルは0バイトクリア。
-            logFileTruncator.truncate(sourcePath);
+            fileTruncator.truncate(sourcePath);
 
             return OperationResult.success("ログファイルの退避が完了しました: " + sourcePath);
 
