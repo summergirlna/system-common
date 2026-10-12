@@ -1,0 +1,20 @@
+system-common:
+  online:
+    start:
+      steps:
+        - name: "負荷分散装置振り分け開始"
+          script: "echo"
+          args:
+            - "/etc/cmcluster/pp/bigip.sh start"
+          timeout: "300s"
+          success-exit-codes:
+            - 0
+    stop:
+      steps:
+        - name: "負荷分散装置振り分け停止"
+          script: "echo"
+          args:
+            - "/etc/cmcluster/pp/bigip.sh stop"
+          timeout: "300s"
+          success-exit-codes:
+            - 0
