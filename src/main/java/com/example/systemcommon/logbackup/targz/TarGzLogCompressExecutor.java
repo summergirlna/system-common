@@ -4,22 +4,14 @@ import com.example.systemcommon.fw.operation.OperationResult;
 import com.example.systemcommon.logbackup.LogBackupPathResolver;
 import com.example.systemcommon.logbackup.LogBackupProperties;
 import com.example.systemcommon.logbackup.LogCompressExecutor;
+import com.example.systemcommon.logbackup.file.DirectoryDeleter;
 import com.example.systemcommon.operationdate.OperationDateProvider;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.StandardOpenOption;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
-import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
-import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -32,6 +24,10 @@ public class TarGzLogCompressExecutor implements LogCompressExecutor {
     private final OperationDateProvider operationDateProvider;
 
     private final LogBackupPathResolver pathResolver;
+
+    private final TarGzArchiveCreator archiveCreator;
+
+    private final DirectoryDeleter directoryDeleter;
 
     @Override
     public OperationResult compress() {
@@ -73,100 +69,36 @@ public class TarGzLogCompressExecutor implements LogCompressExecutor {
     }
 
     private OperationResult compressIfExpired(
-            Path dateDirectory, LocalDate directoryDate, LocalDate compressThresholdDate) {
+            Path directory, LocalDate directoryDate, LocalDate compressThresholdDate) {
         if (directoryDate.isAfter(compressThresholdDate)) {
             log.info(
                     "圧縮対象日より新しいためスキップします。directory={}, directoryDate={}, thresholdDate={}",
-                    dateDirectory,
+                    directory,
                     directoryDate,
                     compressThresholdDate);
-            return OperationResult.success("圧縮対象日より新しいためスキップしました: " + dateDirectory);
+            return OperationResult.success("圧縮対象日より新しいためスキップしました: " + directory);
         }
 
-        return compressDateDirectory(dateDirectory);
+        return compressDirectory(directory);
     }
 
-    private OperationResult compressDateDirectory(Path dateDirectory) {
-        Path tarGzPath = pathResolver.resolveTarGzPath(dateDirectory);
+    private OperationResult compressDirectory(Path directory) {
+        Path tarGzPath = pathResolver.resolveTarGzPath(directory);
         if (Files.exists(tarGzPath)) {
             log.error("圧縮先ファイルが既に存在します。tarGzPath={}", tarGzPath);
             return OperationResult.failure("圧縮先ファイルが既に存在します: " + tarGzPath);
         }
 
         try {
-            log.info("日付ディレクトリを圧縮します。dateDirectory={}, tarGzPath={}", dateDirectory, tarGzPath);
-            createTarGz(dateDirectory, tarGzPath);
-            deleteDirectory(dateDirectory);
-            log.info("日付ディレクトリの圧縮が完了しました。dateDirectory={}, tarGzPath={}", dateDirectory, tarGzPath);
-            return OperationResult.success("日付ディレクトリの圧縮が完了しました: " + dateDirectory);
+            log.info("日付ディレクトリを圧縮します。dateDirectory={}, tarGzPath={}", directory, tarGzPath);
+            archiveCreator.create(directory, tarGzPath);
+            directoryDeleter.delete(directory);
+            log.info("日付ディレクトリの圧縮が完了しました。dateDirectory={}, tarGzPath={}", directory, tarGzPath);
+            return OperationResult.success("日付ディレクトリの圧縮が完了しました: " + directory);
 
         } catch (IOException e) {
-            log.error("日付ディレクトリの圧縮に失敗しました。dateDirectory={}, tarGzPath={}", dateDirectory, tarGzPath);
-            return OperationResult.failure("日付ディレクトリの圧縮に失敗しました: " + dateDirectory);
+            log.error("日付ディレクトリの圧縮に失敗しました。dateDirectory={}, tarGzPath={}", directory, tarGzPath);
+            return OperationResult.failure("日付ディレクトリの圧縮に失敗しました: " + directory);
         }
-    }
-
-    private void createTarGz(Path sourceDirectory, Path tarGzPath) throws IOException {
-        try (OutputStream fileOutputStream =
-                        Files.newOutputStream(tarGzPath, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
-                GzipCompressorOutputStream gzipOutputStream = new GzipCompressorOutputStream(fileOutputStream);
-                TarArchiveOutputStream tarOutputStream = new TarArchiveOutputStream(gzipOutputStream)) {
-
-            tarOutputStream.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
-            addToTar(sourceDirectory, sourceDirectory.getParent(), tarOutputStream);
-        }
-    }
-
-    private void addToTar(Path path, Path baseDirectory, TarArchiveOutputStream tarOutputStream) throws IOException {
-        Files.walkFileTree(path, new SimpleFileVisitor<>() {
-            @Override
-            public FileVisitResult preVisitDirectory(@NonNull Path directory, @NonNull BasicFileAttributes attrs)
-                    throws IOException {
-                addEntry(directory, baseDirectory, tarOutputStream);
-                return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult visitFile(@NonNull Path file, @NonNull BasicFileAttributes attrs)
-                    throws IOException {
-                addEntry(file, baseDirectory, tarOutputStream);
-                return FileVisitResult.CONTINUE;
-            }
-        });
-    }
-
-    private void addEntry(Path path, Path baseDirectory, TarArchiveOutputStream tarOutputStream) throws IOException {
-        Path relativePath = baseDirectory.relativize(path);
-        String entryName = relativePath.toString().replace('\\', '/');
-
-        TarArchiveEntry entry = new TarArchiveEntry(path, entryName);
-        tarOutputStream.putArchiveEntry(entry);
-
-        if (Files.isRegularFile(path)) {
-            Files.copy(path, tarOutputStream);
-        }
-
-        tarOutputStream.closeArchiveEntry();
-    }
-
-    private void deleteDirectory(Path directory) throws IOException {
-        Files.walkFileTree(directory, new SimpleFileVisitor<>() {
-            @Override
-            public FileVisitResult visitFile(@NonNull Path file, @NonNull BasicFileAttributes attrs)
-                    throws IOException {
-                Files.delete(file);
-                return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult postVisitDirectory(@NonNull Path directory, IOException exc) throws IOException {
-                if (exc != null) {
-                    throw exc;
-                }
-
-                Files.delete(directory);
-                return FileVisitResult.CONTINUE;
-            }
-        });
     }
 }
