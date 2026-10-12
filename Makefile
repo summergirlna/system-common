@@ -6,7 +6,7 @@ LOG_ARCHIVE_DIR := log_arc
 JAVA := SYSTEM_COMMON_LOG_DIR=$(LOG_DIR) SYSTEM_COMMON_OPERATION_DATE_FILE=$(OPERATION_DATE_FILE) SYSTEM_COMMON_LOG_ARCHIVE_DIR=$(LOG_ARCHIVE_DIR) java -jar $(JAR)
 
 .PHONY: help clean package build verify test format format-check lint check \
-	run-operation-date-update run-log-backup \
+	run-operation-date-update run-log-backup run-log-compress \
 	run-cluster-pre-check run-cluster-start run-cluster-check run-cluster-stop \
 	run-middleware-start run-middleware-check run-middleware-stop \
 	run-application-start run-application-stop \
@@ -26,6 +26,7 @@ help:
 	@echo "  make check                      - Run format check, lint, and tests"
 	@echo "  make run-operation-date-update  - Run operation-date-update job"
 	@echo "  make run-log-backup             - Run log-backup job"
+	@echo "  make run-log-compress           - Run log-compress job"
 	@echo "  make run-cluster-pre-check      - Run cluster-pre-check job"
 	@echo "  make run-cluster-start          - Run cluster-start job"
 	@echo "  make run-cluster-check          - Run cluster-check job"
@@ -107,6 +108,9 @@ run-operation-date-update: package
 
 run-log-backup: package
 	$(JAVA) log-backup
+
+run-log-compress: package
+	$(JAVA) log-compress
 
 run-monday-morning: package
 	$(JAVA) operation-date-update
