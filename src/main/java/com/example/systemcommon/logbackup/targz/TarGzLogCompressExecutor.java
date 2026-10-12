@@ -1,6 +1,7 @@
 package com.example.systemcommon.logbackup.targz;
 
 import com.example.systemcommon.fw.operation.OperationResult;
+import com.example.systemcommon.logbackup.LogBackupPathResolver;
 import com.example.systemcommon.logbackup.LogBackupProperties;
 import com.example.systemcommon.logbackup.LogCompressExecutor;
 import com.example.systemcommon.operationdate.OperationDateProvider;
@@ -13,8 +14,6 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
@@ -28,13 +27,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class TarGzLogCompressExecutor implements LogCompressExecutor {
 
-    private static final DateTimeFormatter DATE_DIRECTORY_FORMATTER = DateTimeFormatter.BASIC_ISO_DATE;
-
-    private static final String TAR_GZ_EXTENSION = ".tar.gz";
-
     private final LogBackupProperties properties;
 
     private final OperationDateProvider operationDateProvider;
+
+    private final LogBackupPathResolver pathResolver;
 
     @Override
     public OperationResult compress() {
@@ -66,14 +63,17 @@ public class TarGzLogCompressExecutor implements LogCompressExecutor {
     }
 
     private OperationResult compressIfTarget(Path dateDirectory, LocalDate compressThresholdDate) {
-        String directoryName = dateDirectory.getFileName().toString();
-        LocalDate directoryDate = parseDateDirectoryName(directoryName);
+        return pathResolver
+                .parseDateDirectoryName(dateDirectory)
+                .map(directoryDate -> compressIfExpired(dateDirectory, directoryDate, compressThresholdDate))
+                .orElseGet(() -> {
+                    log.info("日付ディレクトリではないためスキップします。directory={}", dateDirectory);
+                    return OperationResult.success("日付ディレクトリではないためスキップしました: " + dateDirectory);
+                });
+    }
 
-        if (directoryDate == null) {
-            log.info("日付ディレクトリではないためスキップします。directory={}", dateDirectory);
-            return OperationResult.success("日付ディレクトリではないためスキップしました: " + dateDirectory);
-        }
-
+    private OperationResult compressIfExpired(
+            Path dateDirectory, LocalDate directoryDate, LocalDate compressThresholdDate) {
         if (directoryDate.isAfter(compressThresholdDate)) {
             log.info(
                     "圧縮対象日より新しいためスキップします。directory={}, directoryDate={}, thresholdDate={}",
@@ -83,7 +83,11 @@ public class TarGzLogCompressExecutor implements LogCompressExecutor {
             return OperationResult.success("圧縮対象日より新しいためスキップしました: " + dateDirectory);
         }
 
-        Path tarGzPath = dateDirectory.resolveSibling(directoryName + TAR_GZ_EXTENSION);
+        return compressDateDirectory(dateDirectory);
+    }
+
+    private OperationResult compressDateDirectory(Path dateDirectory) {
+        Path tarGzPath = pathResolver.resolveTarGzPath(dateDirectory);
         if (Files.exists(tarGzPath)) {
             log.error("圧縮先ファイルが既に存在します。tarGzPath={}", tarGzPath);
             return OperationResult.failure("圧縮先ファイルが既に存在します: " + tarGzPath);
@@ -99,14 +103,6 @@ public class TarGzLogCompressExecutor implements LogCompressExecutor {
         } catch (IOException e) {
             log.error("日付ディレクトリの圧縮に失敗しました。dateDirectory={}, tarGzPath={}", dateDirectory, tarGzPath);
             return OperationResult.failure("日付ディレクトリの圧縮に失敗しました: " + dateDirectory);
-        }
-    }
-
-    private LocalDate parseDateDirectoryName(String directoryName) {
-        try {
-            return LocalDate.parse(directoryName, DATE_DIRECTORY_FORMATTER);
-        } catch (DateTimeParseException e) {
-            return null;
         }
     }
 

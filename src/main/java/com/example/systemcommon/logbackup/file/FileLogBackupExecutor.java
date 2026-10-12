@@ -2,6 +2,7 @@ package com.example.systemcommon.logbackup.file;
 
 import com.example.systemcommon.fw.operation.OperationResult;
 import com.example.systemcommon.logbackup.LogBackupExecutor;
+import com.example.systemcommon.logbackup.LogBackupPathResolver;
 import com.example.systemcommon.logbackup.LogBackupProperties;
 import com.example.systemcommon.logbackup.LogBackupTargetProperties;
 import com.example.systemcommon.operationdate.OperationDateProvider;
@@ -23,14 +24,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class FileLogBackupExecutor implements LogBackupExecutor {
 
-    private static final DateTimeFormatter DATE_DIRECTORY_FORMATTER = DateTimeFormatter.BASIC_ISO_DATE;
-
     private static final DateTimeFormatter BACKUP_FILE_TIMESTAMP_FORMATTER =
             DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 
     private final LogBackupProperties properties;
 
     private final OperationDateProvider operationDateProvider;
+
+    private final LogBackupPathResolver pathResolver;
 
     @Override
     public OperationResult backup() {
@@ -43,10 +44,9 @@ public class FileLogBackupExecutor implements LogBackupExecutor {
         }
 
         LocalDate operationDate = operationDateProvider.getOperationDate();
-        String dateDirectoryName = operationDate.format(DATE_DIRECTORY_FORMATTER);
 
         for (LogBackupTargetProperties target : properties.targets()) {
-            OperationResult result = backupTarget(archiveRootDirectory, dateDirectoryName, target);
+            OperationResult result = backupTarget(archiveRootDirectory, operationDate, target);
             if (result.isFailure()) {
                 return result;
             }
@@ -57,7 +57,7 @@ public class FileLogBackupExecutor implements LogBackupExecutor {
     }
 
     private OperationResult backupTarget(
-            Path archiveRootDirectory, String dateDirectoryName, LogBackupTargetProperties target) {
+            Path archiveRootDirectory, LocalDate operationDate, LogBackupTargetProperties target) {
 
         Path sourcePath = target.sourcePath();
         String productName = target.productName();
@@ -72,7 +72,7 @@ public class FileLogBackupExecutor implements LogBackupExecutor {
             return OperationResult.failure("ログ退避対象が通常ファイルではありません: " + sourcePath);
         }
 
-        Path backupFilePath = resolveBackupFilePath(archiveRootDirectory, dateDirectoryName, target);
+        Path backupFilePath = pathResolver.resolveBackupFilePath(archiveRootDirectory, operationDate, target);
 
         try {
             Files.createDirectories(backupFilePath.getParent());
@@ -92,14 +92,6 @@ public class FileLogBackupExecutor implements LogBackupExecutor {
             log.error("ログファイルの退避に失敗しました。sourcePath={}, backupFilePath={}", sourcePath, backupFilePath, e);
             return OperationResult.failure("ログファイルの退避に失敗しました: " + sourcePath);
         }
-    }
-
-    private Path resolveBackupFilePath(
-            Path archiveRootDirectory, String dateDirectoryName, LogBackupTargetProperties target) {
-        return archiveRootDirectory
-                .resolve(dateDirectoryName)
-                .resolve(target.productName())
-                .resolve(target.sourcePath().getFileName());
     }
 
     private void renameExistingBackupFile(Path backupFilePath) throws IOException {
