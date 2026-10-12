@@ -10,7 +10,10 @@ import com.example.systemcommon.operationdate.OperationDateProvider;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -126,7 +129,14 @@ class FileLogBackupExecutorTest {
 
         OperationDateProvider operationDateProvider = () -> OPERATION_DATE;
 
-        return new FileLogBackupExecutor(properties, operationDateProvider, new LogBackupPathResolver());
+        Clock clock = Clock.fixed(Instant.parse("2026-10-10T12:30:45.123Z"), ZoneId.of("Asia/Tokyo"));
+
+        return new FileLogBackupExecutor(
+                properties,
+                operationDateProvider,
+                new LogBackupPathResolver(),
+                new ExistingBackupFileRenamer(clock),
+                new LogFileTruncator());
     }
 
     private Path createDirectory(String path) throws Exception {

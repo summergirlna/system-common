@@ -7,13 +7,10 @@ import com.example.systemcommon.logbackup.LogBackupProperties;
 import com.example.systemcommon.logbackup.LogBackupTargetProperties;
 import com.example.systemcommon.operationdate.OperationDateProvider;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +29,10 @@ public class FileLogBackupExecutor implements LogBackupExecutor {
     private final OperationDateProvider operationDateProvider;
 
     private final LogBackupPathResolver pathResolver;
+
+    private final ExistingBackupFileRenamer existingBackupFileRenamer;
+
+    private final LogFileTruncator logFileTruncator;
 
     @Override
     public OperationResult backup() {
@@ -76,52 +77,18 @@ public class FileLogBackupExecutor implements LogBackupExecutor {
 
         try {
             Files.createDirectories(backupFilePath.getParent());
-
-            if (Files.exists(backupFilePath)) {
-                renameExistingBackupFile(backupFilePath);
-            }
+            existingBackupFileRenamer.renameIfExists(backupFilePath);
 
             log.info("ログファイルを退避します。sourcePath={}, backupFilePath={}", sourcePath, backupFilePath);
             Files.copy(sourcePath, backupFilePath, StandardCopyOption.COPY_ATTRIBUTES);
 
-            truncate(sourcePath);
+            logFileTruncator.truncate(sourcePath);
 
             return OperationResult.success("ログファイルの退避が完了しました: " + sourcePath);
 
         } catch (IOException e) {
             log.error("ログファイルの退避に失敗しました。sourcePath={}, backupFilePath={}", sourcePath, backupFilePath, e);
             return OperationResult.failure("ログファイルの退避に失敗しました: " + sourcePath);
-        }
-    }
-
-    private void renameExistingBackupFile(Path backupFilePath) throws IOException {
-        Path renamedBackupFilePath = resolveRenamedBackupFilePath(backupFilePath);
-
-        log.warn(
-                "ログ退避先ファイルがすでに存在するためリネームします。backupFilePath={}, renamedBackupFilePath={}",
-                backupFilePath,
-                renamedBackupFilePath);
-        Files.move(backupFilePath, renamedBackupFilePath);
-    }
-
-    private Path resolveRenamedBackupFilePath(Path backupFilePath) {
-        String timestamp = LocalDateTime.now().format(BACKUP_FILE_TIMESTAMP_FORMATTER);
-        Path parent = backupFilePath.getParent();
-        String fileName = backupFilePath.getFileName().toString();
-        Path renamedPath = parent.resolve(fileName + "." + timestamp);
-
-        int sequence = 1;
-        while (Files.exists(renamedPath)) {
-            renamedPath = parent.resolve(fileName + "." + timestamp + "." + sequence);
-            sequence++;
-        }
-
-        return renamedPath;
-    }
-
-    private void truncate(Path sourcePath) throws IOException {
-        try (FileChannel channel = FileChannel.open(sourcePath, StandardOpenOption.WRITE)) {
-            channel.truncate(0);
         }
     }
 }
