@@ -21,6 +21,7 @@
         <spotless.version>3.10.3</spotless.version>
         <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
         <commons-compress.version>1.28.0</commons-compress.version>
+        <oshi.version>7.7.1</oshi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -48,6 +49,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
             <version>${commons-compress.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.oshi</groupId>
+            <artifactId>oshi-core</artifactId>
+            <version>${oshi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

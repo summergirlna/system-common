@@ -1,0 +1,9 @@
+system-common:
+  resource-monitor:
+    output-directory: "perf/raw"
+    pid-file: "perf/perf.pid"
+    interval: "60s"
+    process-keywords:
+      - "java"
+    file-stores:
+      - "/"

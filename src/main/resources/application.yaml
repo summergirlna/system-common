@@ -10,6 +10,7 @@ spring:
       - classpath:application-online.yaml
       - classpath:application-application.yaml
       - classpath:application-db-backup.yaml
+      - classpath:application-resource-monitor.yaml
 
 system-common:
   operation-date:
