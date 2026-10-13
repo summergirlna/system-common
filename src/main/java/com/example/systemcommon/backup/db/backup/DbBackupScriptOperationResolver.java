@@ -10,6 +10,14 @@ import org.springframework.stereotype.Component;
 public class DbBackupScriptOperationResolver {
 
     public ScriptOperationProperties resolve(DbBackupContext context, ScriptOperationProperties properties) {
+        if (properties == null) {
+            return new ScriptOperationProperties(List.of());
+        }
+
+        if (properties.steps() == null) {
+            return new ScriptOperationProperties(List.of());
+        }
+
         List<ScriptStepProperties> steps = properties.steps().stream()
                 .map(step -> new ScriptStepProperties(
                         step.name(),

@@ -18,6 +18,11 @@ public class ScriptOperationExecutor {
     public OperationResult execute(String targetName, String operationName, List<ScriptStepProperties> steps) {
         log.info("{}{}処理を開始します。", targetName, operationName);
 
+        if (steps == null || steps.isEmpty()) {
+            log.error("{}{}処理のスクリプトステップが設定されていません。", targetName, operationName);
+            return OperationResult.failure(targetName + operationName + "処理のスクリプトステップが設定されていません。");
+        }
+
         for (ScriptStepProperties step : steps) {
             OperationResult result = executeStep(targetName, operationName, step);
             if (result.isFailure()) {
