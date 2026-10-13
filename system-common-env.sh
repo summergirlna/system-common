@@ -27,3 +27,9 @@ export SYSTEM_COMMON_AUDIT_LOG_ARCHIVE_DIR="${SYSTEM_COMMON_AUDIT_LOG_ARCHIVE_DI
 export SYSTEM_COMMON_AUDIT_LOG_COMPRESS_AFTER_DAYS="${SYSTEM_COMMON_AUDIT_LOG_COMPRESS_AFTER_DAYS:-31}"
 # 削除期限(この日を過ぎたら削除する)
 export SYSTEM_COMMON_AUDIT_LOG_DELETE_AFTER_DAYS="${SYSTEM_COMMON_AUDIT_LOG_DELETE_AFTER_DAYS:-366}"
+
+# -----------------------------------------
+# DBバックアップ関連関連
+# -----------------------------------------
+# バックアップ先パス
+export SYSTEM_COMMON_DB_BACKUP_DIR="${SYSTEM_COMMON_DB_BACKUP_DIR:-db_backup}"

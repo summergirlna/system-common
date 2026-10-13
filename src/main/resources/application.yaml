@@ -9,6 +9,7 @@ spring:
       - classpath:application-middleware.yaml
       - classpath:application-online.yaml
       - classpath:application-application.yaml
+      - classpath:application-db-backup.yaml
 
 system-common:
   operation-date:

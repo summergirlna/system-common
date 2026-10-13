@@ -1,0 +1,15 @@
+system-common:
+  db-backup:
+    backup-root-directory: "db_backup"
+    backup:
+      steps:
+        - name: "${SYSTEM_COMMON_DB_BACKUP_DIR:db_backup}"
+          script: "echo"
+          args:
+            - "db backup"
+            - "{operationDate}"
+            - "{backupRootDirectory}"
+            - "{backupId}"
+          timeout: "1800s"
+          success-exit-codes:
+            - 0

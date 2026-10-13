@@ -2,7 +2,7 @@ MVN := /bin/sh /Users/kuritayu/Library/Application\ Support/JetBrains/IntelliJId
 RUN_JOB := ./system-common-run.sh
 
 .PHONY: help clean package build verify test format format-check lint check run \
-	run-monday-morning run-weekday-morning run-weekday-night run-friday-night
+	run-monday run-weekday run-friday
 
 help:
 	@echo "Available targets:"
@@ -16,10 +16,9 @@ help:
 	@echo "  make lint                       - Run Checkstyle"
 	@echo "  make check                      - Run format check, lint, and tests"
 	@echo "  make run JOB=<job-name>         - Run arbitrary job"
-	@echo "  make run-monday-morning         - Run Monday morning operation"
-	@echo "  make run-weekday-morning        - Run Tuesday-Friday morning operation"
-	@echo "  make run-weekday-night          - Run Monday-Thursday night operation"
-	@echo "  make run-friday-night           - Run Friday night operation"
+	@echo "  make run-monday                 - Run Monday morning operation"
+	@echo "  make run-weekday                - Run Tuesday-Friday morning operation"
+	@echo "  make run-friday                 - Run Friday night operation"
 
 clean:
 	$(MVN) clean
@@ -52,7 +51,7 @@ run: package
 	@test -n "$(JOB)" || (echo "JOB is required. Usage: make run JOB=<job-name>" && exit 1)
 	$(RUN_JOB) $(JOB)
 
-run-monday-morning: package
+run-monday: package
 	$(RUN_JOB) operation-date-update
 	$(RUN_JOB) cluster-pre-check
 	$(RUN_JOB) cluster-start
@@ -60,14 +59,21 @@ run-monday-morning: package
 	$(RUN_JOB) middleware-start
 	$(RUN_JOB) middleware-check
 	$(RUN_JOB) online-start
+	$(RUN_JOB) online-stop
+	$(RUN_JOB) application-stop
+	$(RUN_JOB) log-backup
+	$(RUN_JOB) log-compress
+	$(RUN_JOB) log-cleanup
+	$(RUN_JOB) audit-log-backup
+	$(RUN_JOB) audit-log-compress
+	$(RUN_JOB) audit-log-cleanup
+	$(RUN_JOB) db-backup
 
-run-weekday-morning: package
+run-weekday: package
 	$(RUN_JOB) operation-date-update
 	$(RUN_JOB) application-start
 	$(RUN_JOB) middleware-check
 	$(RUN_JOB) online-start
-
-run-weekday-night: package
 	$(RUN_JOB) online-stop
 	$(RUN_JOB) application-stop
 	$(RUN_JOB) log-backup
@@ -76,8 +82,13 @@ run-weekday-night: package
 	$(RUN_JOB) audit-log-backup
 	$(RUN_JOB) audit-log-compress
 	$(RUN_JOB) audit-log-cleanup
+	$(RUN_JOB) db-backup
 
-run-friday-night: package
+run-friday: package
+	$(RUN_JOB) operation-date-update
+	$(RUN_JOB) application-start
+	$(RUN_JOB) middleware-check
+	$(RUN_JOB) online-start
 	$(RUN_JOB) online-stop
 	$(RUN_JOB) application-stop
 	$(RUN_JOB) log-backup
@@ -86,5 +97,6 @@ run-friday-night: package
 	$(RUN_JOB) audit-log-backup
 	$(RUN_JOB) audit-log-compress
 	$(RUN_JOB) audit-log-cleanup
+	$(RUN_JOB) db-backup
 	$(RUN_JOB) middleware-stop
 	$(RUN_JOB) cluster-stop
