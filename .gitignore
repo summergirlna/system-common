@@ -39,3 +39,4 @@ logs
 var
 log_arc
 audit_log_arc
+perf
