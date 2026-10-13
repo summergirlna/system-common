@@ -98,6 +98,4 @@ public class OshiCpuSnapshotCollector implements CpuSnapshotCollector {
 
         return value;
     }
-
-    private record CpuTickRates(double userRate, double systemRate, double idleRate, double ioWaitRate) {}
 }

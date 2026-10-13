@@ -1,6 +1,7 @@
-package com.example.systemcommon.backup.db.quiesce;
+package com.example.systemcommon.backup.db.quiesce.noop;
 
 import com.example.systemcommon.backup.db.DbBackupContext;
+import com.example.systemcommon.backup.db.quiesce.DbQuiesceManager;
 import com.example.systemcommon.fw.operation.OperationResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

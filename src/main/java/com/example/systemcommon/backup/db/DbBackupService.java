@@ -101,6 +101,4 @@ public class DbBackupService {
         log.info("DBバックアップ処理が正常終了しました。");
         return OperationResult.success("DBバックアップ処理が正常終了しました。");
     }
-
-    private record BackupExecutionResult(OperationResult backupResult, OperationResult validateResult) {}
 }
