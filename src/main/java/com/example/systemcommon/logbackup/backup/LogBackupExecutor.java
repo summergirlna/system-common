@@ -1,7 +1,0 @@
-package com.example.systemcommon.logbackup.backup;
-
-import com.example.systemcommon.fw.operation.OperationResult;
-
-public interface LogBackupExecutor {
-    OperationResult backup();
-}

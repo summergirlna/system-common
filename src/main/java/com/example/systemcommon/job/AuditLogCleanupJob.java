@@ -1,8 +1,8 @@
 package com.example.systemcommon.job;
 
+import com.example.systemcommon.backup.log.cleanup.LogCleanupExecutor;
 import com.example.systemcommon.fw.job.AbstractOperationJob;
 import com.example.systemcommon.fw.operation.OperationResult;
-import com.example.systemcommon.logbackup.cleanup.LogCleanupExecutor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 

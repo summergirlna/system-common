@@ -1,8 +1,8 @@
 package com.example.systemcommon.job;
 
+import com.example.systemcommon.backup.log.backup.AuditLogBackupOperation;
 import com.example.systemcommon.fw.job.AbstractOperationJob;
 import com.example.systemcommon.fw.operation.OperationResult;
-import com.example.systemcommon.logbackup.backup.AuditLogBackupOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
