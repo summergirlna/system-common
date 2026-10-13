@@ -1,8 +1,10 @@
 system-common:
   resource-monitor:
     output-directory: "perf/raw"
-    pid-file: "perf/perf.pid"
+    pid-file: "perf/resource-monitor.pid"
+    run-script: "system-common-run.sh"
     interval: "5s"
+    stop-timeout: "30s"
     process-keywords:
       - "java"
     file-stores:

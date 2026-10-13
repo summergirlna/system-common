@@ -20,4 +20,6 @@ fi
 # shellcheck disable=SC1090
 . "${ENV_FILE}"
 
-exec java -jar "${JAR_FILE}" "${JOB_NAME}"
+JAVA_OPTS="${SYSTEM_COMMON_JAVA_OPTS:---enable-native-access=ALL-UNNAMED}"
+
+exec java ${JAVA_OPTS} -jar "${JAR_FILE}" "${JOB_NAME}"

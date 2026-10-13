@@ -7,4 +7,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "system-common.resource-monitor")
 public record ResourceMonitorProperties(
-        Path outputDirectory, Path pidFile, Duration interval, List<String> processKeywords, List<Path> fileStores) {}
+        Path outputDirectory,
+        Path pidFile,
+        Path runScript,
+        Duration interval,
+        Duration stopTimeout,
+        List<String> processKeywords,
+        List<Path> fileStores) {}
