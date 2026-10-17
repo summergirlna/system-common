@@ -1,8 +1,8 @@
-package com.example.systemcommon.resource.report.cpu.cpu;
+package com.example.systemcommon.resource.report.cpu.csv;
 
 import com.example.systemcommon.resource.ResourceMonitorProperties;
 import com.example.systemcommon.resource.report.cpu.CpuUsageDataPoint;
-import com.example.systemcommon.resource.report.cpu.CpuUsageDateReader;
+import com.example.systemcommon.resource.report.cpu.CpuUsageDataReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class CsvCpuUsageDataReader implements CpuUsageDateReader {
+public class CsvCpuUsageDataReader implements CpuUsageDataReader {
 
     private static final String CPU_CSV_FILE_PATTERN = "cpu-*.csv";
 
