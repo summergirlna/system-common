@@ -1,6 +1,7 @@
 system-common:
   resource-monitor:
     output-directory: "perf/raw"
+    report-directory: "perf/report"
     pid-file: "perf/resource-monitor.pid"
     run-script: "system-common-run.sh"
     interval: "5s"
