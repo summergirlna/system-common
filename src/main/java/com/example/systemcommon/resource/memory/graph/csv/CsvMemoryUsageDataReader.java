@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class CsvmemoryUsageDataReader implements MemoryUsageDataReader {
+public class CsvMemoryUsageDataReader implements MemoryUsageDataReader {
     private static final String MEMORY_CSV_FILE_PATTERN = "memory-*.csv";
 
     private static final int COLLECTED_AT_INDEX = 0;
