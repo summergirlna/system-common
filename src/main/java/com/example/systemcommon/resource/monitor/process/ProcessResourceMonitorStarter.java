@@ -1,5 +1,6 @@
 package com.example.systemcommon.resource.monitor.process;
 
+import com.example.systemcommon.fw.file.ParentDirectoryCreator;
 import com.example.systemcommon.fw.operation.OperationResult;
 import com.example.systemcommon.resource.monitor.ResourceMonitorProperties;
 import com.example.systemcommon.resource.monitor.ResourceMonitorStarter;
@@ -19,6 +20,8 @@ public class ProcessResourceMonitorStarter implements ResourceMonitorStarter {
     private static final String RESOURCE_MONITOR_RUN_JOB_NAME = "resource-monitor-run";
 
     private final ResourceMonitorProperties properties;
+
+    private final ParentDirectoryCreator parentDirectoryCreator;
 
     @Override
     public OperationResult start() {
@@ -42,10 +45,7 @@ public class ProcessResourceMonitorStarter implements ResourceMonitorStarter {
         }
 
         try {
-            Path pidFileParent = pidFile.getParent();
-            if (pidFileParent != null) {
-                Files.createDirectories(pidFileParent);
-            }
+            parentDirectoryCreator.createParentOf(pidFile);
 
             Process process = new ProcessBuilder(runScript.toString(), RESOURCE_MONITOR_RUN_JOB_NAME)
                     .redirectOutput(ProcessBuilder.Redirect.DISCARD)

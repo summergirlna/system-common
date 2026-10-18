@@ -6,6 +6,7 @@ import com.example.systemcommon.backup.log.LogBackupPathResolver;
 import com.example.systemcommon.backup.log.LogBackupProperties;
 import com.example.systemcommon.backup.log.backup.LogBackupTargetProperties;
 import com.example.systemcommon.fw.file.FileTruncator;
+import com.example.systemcommon.fw.file.ParentDirectoryCreator;
 import com.example.systemcommon.fw.file.TimestampFileRenamer;
 import com.example.systemcommon.fw.operation.OperationResult;
 import com.example.systemcommon.operationdate.OperationDateProvider;
@@ -138,7 +139,10 @@ class FileLogBackupExecutorTest {
                 new FileLogBackupService(
                         operationDateProvider,
                         new FileLogBackupTargetProcessor(
-                                new LogBackupPathResolver(), new TimestampFileRenamer(clock), new FileTruncator())));
+                                new LogBackupPathResolver(),
+                                new TimestampFileRenamer(clock),
+                                new FileTruncator(),
+                                new ParentDirectoryCreator())));
     }
 
     private Path createDirectory(String path) throws Exception {

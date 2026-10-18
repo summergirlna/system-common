@@ -1,5 +1,6 @@
 package com.example.systemcommon.resource.memory.output.csv;
 
+import com.example.systemcommon.fw.file.ParentDirectoryCreator;
 import com.example.systemcommon.resource.memory.collect.MemorySnapshot;
 import com.example.systemcommon.resource.memory.output.MemorySnapshotWriter;
 import com.example.systemcommon.resource.monitor.ResourceMonitorProperties;
@@ -36,12 +37,14 @@ public class CsvMemorySnapshotWriter implements MemorySnapshotWriter {
 
     private final ResourceMonitorProperties properties;
 
+    private final ParentDirectoryCreator parentDirectoryCreator;
+
     @Override
     public void write(MemorySnapshot snapshot) {
         Path outputPath = resolveOutputPath(snapshot);
 
         try {
-            Files.createDirectories(outputPath.getParent());
+            parentDirectoryCreator.createParentOf(outputPath);
 
             boolean shouldWriteHeader = Files.notExists(outputPath) || Files.size(outputPath) == 0;
             if (shouldWriteHeader) {

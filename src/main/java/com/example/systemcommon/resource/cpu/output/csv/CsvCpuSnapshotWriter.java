@@ -1,5 +1,6 @@
 package com.example.systemcommon.resource.cpu.output.csv;
 
+import com.example.systemcommon.fw.file.ParentDirectoryCreator;
 import com.example.systemcommon.resource.cpu.collect.CpuSnapshot;
 import com.example.systemcommon.resource.cpu.output.CpuSnapshotWriter;
 import com.example.systemcommon.resource.monitor.ResourceMonitorProperties;
@@ -39,12 +40,14 @@ public class CsvCpuSnapshotWriter implements CpuSnapshotWriter {
 
     private final ResourceMonitorProperties properties;
 
+    private final ParentDirectoryCreator parentDirectoryCreator;
+
     @Override
     public void write(CpuSnapshot snapshot) {
         Path outputPath = resolveOutputPath(snapshot);
 
         try {
-            Files.createDirectories(outputPath.getParent());
+            parentDirectoryCreator.createParentOf(outputPath);
 
             boolean shouldWriteHeader = Files.notExists(outputPath) || Files.size(outputPath) == 0;
             if (shouldWriteHeader) {

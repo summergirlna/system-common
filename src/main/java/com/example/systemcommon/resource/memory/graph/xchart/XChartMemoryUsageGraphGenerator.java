@@ -1,5 +1,6 @@
 package com.example.systemcommon.resource.memory.graph.xchart;
 
+import com.example.systemcommon.fw.file.ParentDirectoryCreator;
 import com.example.systemcommon.resource.memory.graph.MemoryUsageDataPoint;
 import com.example.systemcommon.resource.memory.graph.MemoryUsageGraphGenerator;
 import java.awt.*;
@@ -29,9 +30,11 @@ public class XChartMemoryUsageGraphGenerator implements MemoryUsageGraphGenerato
 
     private static final String IMAGE_FORMAT = "png";
 
+    private final ParentDirectoryCreator parentDirectoryCreator;
+
     @Override
     public void generate(List<MemoryUsageDataPoint> dataPoints, Path outputPath) throws IOException {
-        Files.createDirectories(outputPath.getParent());
+        parentDirectoryCreator.createParentOf(outputPath);
 
         XYChart chart = createChart(dataPoints);
 

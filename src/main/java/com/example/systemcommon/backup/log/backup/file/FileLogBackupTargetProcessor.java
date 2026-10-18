@@ -3,6 +3,7 @@ package com.example.systemcommon.backup.log.backup.file;
 import com.example.systemcommon.backup.log.LogBackupPathResolver;
 import com.example.systemcommon.backup.log.backup.LogBackupTargetProperties;
 import com.example.systemcommon.fw.file.FileTruncator;
+import com.example.systemcommon.fw.file.ParentDirectoryCreator;
 import com.example.systemcommon.fw.file.TimestampFileRenamer;
 import com.example.systemcommon.fw.operation.OperationResult;
 import java.io.IOException;
@@ -24,6 +25,8 @@ public class FileLogBackupTargetProcessor {
     private final TimestampFileRenamer timestampFileRenamer;
 
     private final FileTruncator fileTruncator;
+
+    private final ParentDirectoryCreator parentDirectoryCreator;
 
     public OperationResult process(
             Path archiveRootDirectory, LocalDate operationDate, LogBackupTargetProperties target) {
@@ -47,7 +50,7 @@ public class FileLogBackupTargetProcessor {
 
         try {
             // 退避先の日付ディレクトリおよびプロダクト名ディレクトリを作成する。
-            Files.createDirectories(backupFilePath.getParent());
+            parentDirectoryCreator.createParentOf(backupFilePath);
 
             // 同一運用日に再実行された場合、既存の退避済みファイルをリネームする。
             timestampFileRenamer.renameIfExists(backupFilePath);

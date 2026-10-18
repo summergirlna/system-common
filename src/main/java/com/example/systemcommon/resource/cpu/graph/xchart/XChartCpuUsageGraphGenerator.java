@@ -1,5 +1,6 @@
 package com.example.systemcommon.resource.cpu.graph.xchart;
 
+import com.example.systemcommon.fw.file.ParentDirectoryCreator;
 import com.example.systemcommon.resource.cpu.graph.CpuUsageDataPoint;
 import com.example.systemcommon.resource.cpu.graph.CpuUsageGraphGenerator;
 import java.awt.*;
@@ -26,8 +27,10 @@ public class XChartCpuUsageGraphGenerator implements CpuUsageGraphGenerator {
 
     private static final String IMAGE_FORMAT = "png";
 
+    private final ParentDirectoryCreator parentDirectoryCreator;
+
     public void generate(List<CpuUsageDataPoint> dataPoints, Path outputPath) throws IOException {
-        Files.createDirectories(outputPath.getParent());
+        parentDirectoryCreator.createParentOf(outputPath);
 
         XYChart chart = createChart(dataPoints);
 

@@ -1,5 +1,6 @@
 package com.example.systemcommon.operationdate.file;
 
+import com.example.systemcommon.fw.file.ParentDirectoryCreator;
 import com.example.systemcommon.fw.operation.OperationResult;
 import com.example.systemcommon.operationdate.OperationDateException;
 import com.example.systemcommon.operationdate.OperationDateProperties;
@@ -28,6 +29,8 @@ public class FileOperationDateService implements OperationDateProvider, Operatio
 
     private final Clock clock;
 
+    private final ParentDirectoryCreator parentDirectoryCreator;
+
     @Override
     public LocalDate getOperationDate() {
         Path filePath = properties.filePath();
@@ -49,10 +52,7 @@ public class FileOperationDateService implements OperationDateProvider, Operatio
         Path filePath = properties.filePath();
 
         try {
-            Path parent = filePath.getParent();
-            if (parent != null) {
-                Files.createDirectories(parent);
-            }
+            parentDirectoryCreator.createParentOf(filePath);
 
             Files.writeString(filePath, value + System.lineSeparator(), StandardCharsets.UTF_8);
 
