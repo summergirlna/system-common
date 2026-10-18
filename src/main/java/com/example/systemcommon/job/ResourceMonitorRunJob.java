@@ -19,6 +19,8 @@ public class ResourceMonitorRunJob extends AbstractOperationJob {
 
     @Override
     protected OperationResult executeOperation() {
+        // 本ジョブはResourceMonitorStartJobからバックグラウンドで実行されるジョブ。
+        // ユーザが直接実行するものではない。
         return resourceMonitorRunner.run();
     }
 

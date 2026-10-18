@@ -1,6 +1,7 @@
 package com.example.systemcommon.resource.cpu.graph;
 
 import com.example.systemcommon.fw.operation.OperationResult;
+import com.example.systemcommon.resource.common.graph.ResourceGraphReportGenerator;
 import com.example.systemcommon.resource.monitor.ResourceMonitorProperties;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class CpuUsageGraphReportService {
+public class CpuUsageGraphReportService implements ResourceGraphReportGenerator {
 
     private static final String OUTPUT_FILE_NAME = "cpu-usage.png";
 

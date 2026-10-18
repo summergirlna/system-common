@@ -1,5 +1,6 @@
 package com.example.systemcommon.resource.cpu.collect;
 
+import com.example.systemcommon.resource.common.snapshot.ResourceSnapshot;
 import java.time.Instant;
 
 public record CpuSnapshot(
@@ -13,4 +14,5 @@ public record CpuSnapshot(
         double ioWaitRate,
         double systemLoadAverage1m,
         double systemLoadAverage5m,
-        double systemLoadAverage15m) {}
+        double systemLoadAverage15m)
+        implements ResourceSnapshot {}
