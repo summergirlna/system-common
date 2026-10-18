@@ -58,6 +58,7 @@ run-monday: package
 	$(RUN_JOB) cluster-check
 	$(RUN_JOB) middleware-start
 	$(RUN_JOB) middleware-check
+	$(RUN_JOB) resource-monitor-start
 	$(RUN_JOB) online-start
 	$(RUN_JOB) online-stop
 	$(RUN_JOB) application-stop
@@ -91,6 +92,8 @@ run-friday: package
 	$(RUN_JOB) online-start
 	$(RUN_JOB) online-stop
 	$(RUN_JOB) application-stop
+	$(RUN_JOB) resource-monitor-stop
+	$(RUN_JOB) resource-graph-generate
 	$(RUN_JOB) log-backup
 	$(RUN_JOB) log-compress
 	$(RUN_JOB) log-cleanup
