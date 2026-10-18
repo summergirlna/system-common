@@ -2,7 +2,7 @@ package com.example.systemcommon.job;
 
 import com.example.systemcommon.fw.job.AbstractOperationJob;
 import com.example.systemcommon.fw.operation.OperationResult;
-import com.example.systemcommon.resource.report.cpu.CpuUsageGraphReportService;
+import com.example.systemcommon.resource.graph.cpu.ResourceGraphReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ResourceGraphGenerateJob extends AbstractOperationJob {
 
-    private final CpuUsageGraphReportService cpuUsageGraphReportService;
+    private final ResourceGraphReportService resourceGraphReportService;
 
     @Override
     protected String operationName() {
@@ -19,7 +19,7 @@ public class ResourceGraphGenerateJob extends AbstractOperationJob {
 
     @Override
     protected OperationResult executeOperation() {
-        return cpuUsageGraphReportService.generate();
+        return resourceGraphReportService.generate();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.example.systemcommon.resource.report.cpu;
+package com.example.systemcommon.resource.graph.cpu;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.example.systemcommon.resource.output.cpu.csv;
 
-import com.example.systemcommon.resource.ResourceMonitorProperties;
 import com.example.systemcommon.resource.collect.cpu.CpuSnapshot;
+import com.example.systemcommon.resource.monitor.ResourceMonitorProperties;
 import com.example.systemcommon.resource.output.cpu.CpuSnapshotWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

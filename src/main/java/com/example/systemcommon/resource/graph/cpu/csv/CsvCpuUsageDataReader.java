@@ -1,8 +1,8 @@
-package com.example.systemcommon.resource.report.cpu.csv;
+package com.example.systemcommon.resource.graph.cpu.csv;
 
-import com.example.systemcommon.resource.ResourceMonitorProperties;
-import com.example.systemcommon.resource.report.cpu.CpuUsageDataPoint;
-import com.example.systemcommon.resource.report.cpu.CpuUsageDataReader;
+import com.example.systemcommon.resource.graph.cpu.CpuUsageDataPoint;
+import com.example.systemcommon.resource.graph.cpu.CpuUsageDataReader;
+import com.example.systemcommon.resource.monitor.ResourceMonitorProperties;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

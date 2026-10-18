@@ -1,4 +1,4 @@
-package com.example.systemcommon.resource;
+package com.example.systemcommon.resource.monitor;
 
 import java.nio.file.Path;
 import java.time.Duration;

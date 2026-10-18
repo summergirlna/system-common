@@ -1,7 +1,6 @@
 package com.example.systemcommon.resource.monitor;
 
 import com.example.systemcommon.fw.operation.OperationResult;
-import com.example.systemcommon.resource.ResourceMonitorProperties;
 import com.example.systemcommon.resource.snapshot.CpuResourceSnapshotService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

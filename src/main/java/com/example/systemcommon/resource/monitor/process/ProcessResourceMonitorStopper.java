@@ -1,7 +1,7 @@
 package com.example.systemcommon.resource.monitor.process;
 
 import com.example.systemcommon.fw.operation.OperationResult;
-import com.example.systemcommon.resource.ResourceMonitorProperties;
+import com.example.systemcommon.resource.monitor.ResourceMonitorProperties;
 import com.example.systemcommon.resource.monitor.ResourceMonitorStopper;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

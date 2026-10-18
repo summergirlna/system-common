@@ -1,7 +1,7 @@
-package com.example.systemcommon.resource.report.cpu;
+package com.example.systemcommon.resource.graph.cpu;
 
 import com.example.systemcommon.fw.operation.OperationResult;
-import com.example.systemcommon.resource.ResourceMonitorProperties;
+import com.example.systemcommon.resource.monitor.ResourceMonitorProperties;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
