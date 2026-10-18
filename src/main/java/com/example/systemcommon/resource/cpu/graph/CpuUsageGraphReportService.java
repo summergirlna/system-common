@@ -1,4 +1,4 @@
-package com.example.systemcommon.resource.graph.cpu;
+package com.example.systemcommon.resource.cpu.graph;
 
 import com.example.systemcommon.fw.operation.OperationResult;
 import com.example.systemcommon.resource.monitor.ResourceMonitorProperties;

@@ -1,7 +1,7 @@
-package com.example.systemcommon.resource.collect.cpu.oshi;
+package com.example.systemcommon.resource.cpu.collect.oshi;
 
-import com.example.systemcommon.resource.collect.cpu.CpuSnapshot;
-import com.example.systemcommon.resource.collect.cpu.CpuSnapshotCollector;
+import com.example.systemcommon.resource.cpu.collect.CpuSnapshot;
+import com.example.systemcommon.resource.cpu.collect.CpuSnapshotCollector;
 import java.time.Instant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

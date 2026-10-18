@@ -1,4 +1,4 @@
-package com.example.systemcommon.resource.collect.cpu;
+package com.example.systemcommon.resource.cpu.collect;
 
 public interface CpuSnapshotCollector {
     CpuSnapshot collect();

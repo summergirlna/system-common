@@ -1,7 +1,7 @@
 package com.example.systemcommon.resource.monitor;
 
 import com.example.systemcommon.fw.operation.OperationResult;
-import com.example.systemcommon.resource.snapshot.CpuResourceSnapshotService;
+import com.example.systemcommon.resource.cpu.snapshot.CpuResourceSnapshotService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

@@ -2,7 +2,7 @@ package com.example.systemcommon.job;
 
 import com.example.systemcommon.fw.job.AbstractOperationJob;
 import com.example.systemcommon.fw.operation.OperationResult;
-import com.example.systemcommon.resource.graph.cpu.ResourceGraphReportService;
+import com.example.systemcommon.resource.graph.ResourceGraphReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

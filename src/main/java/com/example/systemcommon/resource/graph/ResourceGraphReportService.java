@@ -1,6 +1,7 @@
-package com.example.systemcommon.resource.graph.cpu;
+package com.example.systemcommon.resource.graph;
 
 import com.example.systemcommon.fw.operation.OperationResult;
+import com.example.systemcommon.resource.cpu.graph.CpuUsageGraphReportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

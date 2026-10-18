@@ -1,9 +1,9 @@
-package com.example.systemcommon.resource.snapshot;
+package com.example.systemcommon.resource.cpu.snapshot;
 
 import com.example.systemcommon.fw.operation.OperationResult;
-import com.example.systemcommon.resource.collect.cpu.CpuSnapshot;
-import com.example.systemcommon.resource.collect.cpu.CpuSnapshotCollector;
-import com.example.systemcommon.resource.output.cpu.CpuSnapshotWriter;
+import com.example.systemcommon.resource.cpu.collect.CpuSnapshot;
+import com.example.systemcommon.resource.cpu.collect.CpuSnapshotCollector;
+import com.example.systemcommon.resource.cpu.output.CpuSnapshotWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

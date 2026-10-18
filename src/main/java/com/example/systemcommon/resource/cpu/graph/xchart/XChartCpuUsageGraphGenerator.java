@@ -1,7 +1,7 @@
-package com.example.systemcommon.resource.graph.cpu.xchart;
+package com.example.systemcommon.resource.cpu.graph.xchart;
 
-import com.example.systemcommon.resource.graph.cpu.CpuUsageDataPoint;
-import com.example.systemcommon.resource.graph.cpu.CpuUsageGraphGenerator;
+import com.example.systemcommon.resource.cpu.graph.CpuUsageDataPoint;
+import com.example.systemcommon.resource.cpu.graph.CpuUsageGraphGenerator;
 import java.awt.*;
 import java.io.IOException;
 import java.io.OutputStream;
