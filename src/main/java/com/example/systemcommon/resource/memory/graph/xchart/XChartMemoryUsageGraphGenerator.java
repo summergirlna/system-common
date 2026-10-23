@@ -3,7 +3,7 @@ package com.example.systemcommon.resource.memory.graph.xchart;
 import com.example.systemcommon.fw.file.ParentDirectoryCreator;
 import com.example.systemcommon.resource.memory.graph.MemoryUsageDataPoint;
 import com.example.systemcommon.resource.memory.graph.MemoryUsageGraphGenerator;
-import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
