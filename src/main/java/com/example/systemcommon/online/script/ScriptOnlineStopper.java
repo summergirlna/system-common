@@ -2,6 +2,7 @@ package com.example.systemcommon.online.script;
 
 import com.example.systemcommon.fw.operation.OperationResult;
 import com.example.systemcommon.fw.script.ScriptOperationExecutor;
+import com.example.systemcommon.fw.script.ScriptOperationNames;
 import com.example.systemcommon.online.OnlineProperties;
 import com.example.systemcommon.online.OnlineStopper;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,9 @@ public class ScriptOnlineStopper implements OnlineStopper {
 
     @Override
     public OperationResult stop() {
-        return executor.execute("オンライン業務", "停止", properties.stop().steps());
+        return executor.execute(
+                ScriptOnlineTargets.TARGET_NAME,
+                ScriptOperationNames.STOP,
+                properties.stop().steps());
     }
 }

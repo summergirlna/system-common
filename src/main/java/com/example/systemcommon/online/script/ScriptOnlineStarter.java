@@ -2,6 +2,7 @@ package com.example.systemcommon.online.script;
 
 import com.example.systemcommon.fw.operation.OperationResult;
 import com.example.systemcommon.fw.script.ScriptOperationExecutor;
+import com.example.systemcommon.fw.script.ScriptOperationNames;
 import com.example.systemcommon.online.OnlineProperties;
 import com.example.systemcommon.online.OnlineStarter;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,9 @@ public class ScriptOnlineStarter implements OnlineStarter {
 
     @Override
     public OperationResult start() {
-        return executor.execute("オンライン業務", "開始", properties.start().steps());
+        return executor.execute(
+                ScriptOnlineTargets.TARGET_NAME,
+                ScriptOperationNames.START,
+                properties.start().steps());
     }
 }
