@@ -4,6 +4,7 @@ import com.example.systemcommon.application.ApplicationProperties;
 import com.example.systemcommon.application.ApplicationStarter;
 import com.example.systemcommon.fw.operation.OperationResult;
 import com.example.systemcommon.fw.script.ScriptOperationExecutor;
+import com.example.systemcommon.fw.script.ScriptOperationNames;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,8 +21,8 @@ public class ScriptApplicationStarter implements ApplicationStarter {
     @Override
     public OperationResult start() {
         return executor.execute(
-                ScriptApplicationOperationNames.TARGET_NAME,
-                ScriptApplicationOperationNames.START,
+                ScriptApplicationTargets.TARGET_NAME,
+                ScriptOperationNames.START,
                 properties.start().steps());
     }
 }

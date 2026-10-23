@@ -2,6 +2,7 @@ package com.example.systemcommon.middleware.script;
 
 import com.example.systemcommon.fw.operation.OperationResult;
 import com.example.systemcommon.fw.script.ScriptOperationExecutor;
+import com.example.systemcommon.fw.script.ScriptOperationNames;
 import com.example.systemcommon.middleware.MiddlewareProperties;
 import com.example.systemcommon.middleware.MiddlewareStopper;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,9 @@ public class ScriptMiddlewareStopper implements MiddlewareStopper {
 
     @Override
     public OperationResult stop() {
-        return executor.execute("ミドルウェア", "停止", properties.stop().steps());
+        return executor.execute(
+                ScriptMiddlewareTargets.TARGET_NAME,
+                ScriptOperationNames.STOP,
+                properties.stop().steps());
     }
 }

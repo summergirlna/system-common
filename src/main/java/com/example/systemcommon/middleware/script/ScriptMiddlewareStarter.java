@@ -2,6 +2,7 @@ package com.example.systemcommon.middleware.script;
 
 import com.example.systemcommon.fw.operation.OperationResult;
 import com.example.systemcommon.fw.script.ScriptOperationExecutor;
+import com.example.systemcommon.fw.script.ScriptOperationNames;
 import com.example.systemcommon.middleware.MiddlewareProperties;
 import com.example.systemcommon.middleware.MiddlewareStarter;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,9 @@ public class ScriptMiddlewareStarter implements MiddlewareStarter {
 
     @Override
     public OperationResult start() {
-        return executor.execute("ミドルウェア", "起動", properties.start().steps());
+        return executor.execute(
+                ScriptMiddlewareTargets.TARGET_NAME,
+                ScriptOperationNames.START,
+                properties.start().steps());
     }
 }

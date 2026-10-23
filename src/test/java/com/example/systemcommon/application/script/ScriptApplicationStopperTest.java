@@ -17,7 +17,7 @@ import org.mockito.Mockito;
 class ScriptApplicationStopperTest {
 
     @Test
-    void stopExecutesApplicationStopScript() {
+    void success() {
         ScriptOperationExecutor executor = Mockito.mock(ScriptOperationExecutor.class);
 
         List<ScriptStepProperties> steps = List.of(new ScriptStepProperties(

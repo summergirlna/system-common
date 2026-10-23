@@ -4,6 +4,7 @@ import com.example.systemcommon.application.ApplicationProperties;
 import com.example.systemcommon.application.ApplicationStopper;
 import com.example.systemcommon.fw.operation.OperationResult;
 import com.example.systemcommon.fw.script.ScriptOperationExecutor;
+import com.example.systemcommon.fw.script.ScriptOperationNames;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,8 +21,8 @@ public class ScriptApplicationStopper implements ApplicationStopper {
     @Override
     public OperationResult stop() {
         return executor.execute(
-                ScriptApplicationOperationNames.TARGET_NAME,
-                ScriptApplicationOperationNames.STOP,
+                ScriptApplicationTargets.TARGET_NAME,
+                ScriptOperationNames.STOP,
                 properties.stop().steps());
     }
 }
