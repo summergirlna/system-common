@@ -12,12 +12,16 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 public class ScriptApplicationStarter implements ApplicationStarter {
+
     private final ApplicationProperties properties;
 
     private final ScriptOperationExecutor executor;
 
     @Override
     public OperationResult start() {
-        return executor.execute("アプリケーション", "起動", properties.start().steps());
+        return executor.execute(
+                ScriptApplicationOperationNames.TARGET_NAME,
+                ScriptApplicationOperationNames.START,
+                properties.start().steps());
     }
 }

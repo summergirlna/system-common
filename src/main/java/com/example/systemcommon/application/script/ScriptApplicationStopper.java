@@ -19,6 +19,9 @@ public class ScriptApplicationStopper implements ApplicationStopper {
 
     @Override
     public OperationResult stop() {
-        return executor.execute("アプリケーション", "停止", properties.stop().steps());
+        return executor.execute(
+                ScriptApplicationOperationNames.TARGET_NAME,
+                ScriptApplicationOperationNames.STOP,
+                properties.stop().steps());
     }
 }
